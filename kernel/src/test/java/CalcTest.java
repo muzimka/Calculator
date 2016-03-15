@@ -24,11 +24,9 @@ public class CalcTest {
         Calculator clc = new Calculator(ciphers,signs);
 
         double x = 0;
-        try {
-            x = clc.calculateExpression(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+            x = clc.calculateExpression();
+
 
         BigDecimal bd = new BigDecimal(x,MathContext.DECIMAL32);
         BigDecimal res = bd.setScale(4, RoundingMode.UP);
