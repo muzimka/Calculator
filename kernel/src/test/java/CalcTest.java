@@ -11,12 +11,14 @@ import java.util.*;
 public class CalcTest {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
 
         LinkedList<Double> ciphers = new LinkedList<Double>();
         LinkedList<Character> signs = new LinkedList<Character>();
-        ciphers.addAll(Arrays.asList(5., 2.,       3., 4.,2.));
-        signs.addAll(Arrays.asList(   '+', '*', '(', '+','-',')'));
+
+        /*5+2*(3-2) = 7*/
+        ciphers.addAll(Arrays.asList(5.,2.,3.,2.));
+        signs.addAll(Arrays.asList( '+','*','(','-',')'));
         //signs.addAll(Arrays.asList(   '+', '*', '+'));
 
         Calculator clc = new Calculator(ciphers,signs);
@@ -25,7 +27,7 @@ public class CalcTest {
         try {
             x = clc.calculateExpression(0);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
 
         BigDecimal bd = new BigDecimal(x,MathContext.DECIMAL32);
