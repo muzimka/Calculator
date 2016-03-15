@@ -1,16 +1,19 @@
-import calcmodel.Calculator;
-import calcmodel.UserInput;
+import calcmodel.UserInputParser;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.util.List;
 
-
-/**
- * Created by MainW8 on 15.03.2016.
- */
+/*Проверка ввода с консоли*/
 public class InputTest {
 
-    public static void main(String[] args) throws Exception{
-        UserInput userInput = new UserInput();
+    public static void main(String[] args) throws Exception {
+
+        for (int i = 0; i < 3; i++) {
+
+            UserInputParser userInput = new UserInputParser();
+            List listSigns = userInput.getSignsList();
+            List listCiphers = userInput.getCiphersList();
+            System.out.println("listCiphers = " + listCiphers);
+            System.out.println("listSigns = " + listSigns);
+        }
     }
 }
