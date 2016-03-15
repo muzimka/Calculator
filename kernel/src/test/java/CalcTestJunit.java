@@ -8,21 +8,22 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Stack;
 
 /**
  * Created by MainW8 on 15.03.2016.
  */
 public class CalcTestJunit {
-    Stack<Double> ciphers;
-    Stack<Character> signs1;
+    LinkedList<Double> ciphers;
+    LinkedList<Character> signs1;
     Calculator clc1;
 
     @Before
             public void init(){
-        ciphers = new Stack<Double>();
+        ciphers = new LinkedList<Double>();
         ciphers.addAll(Arrays.asList(5., 3., 2., 3., 3.));
-        Stack<Character> signs = new Stack<Character>();
+        LinkedList<Character> signs = new LinkedList<Character>();
         signs.addAll(Arrays.asList('/', '+', '*', '+'));
         clc1 = new Calculator(ciphers,signs);
     }
