@@ -5,19 +5,19 @@ import java.util.*;
 
 // TODO: 15.03.2016 сделать скобки в скобках, на данный момент он находит первую открывающую скобку блока, но обращается к закрывающей внетреннего блока
 public class Calculator {
-    LinkedList<Double> ciphers;
+    LinkedList<Double> thisCiphers;
     LinkedList<Character> signs;
 
 
     /*ввод пользователя разобранный парсером на два листа 1. цифры 2. знаки*/
     public Calculator(LinkedList<Double> ciphers, LinkedList<Character> signs) {
-        this.ciphers = ciphers;
+        this.thisCiphers = ciphers;
         this.signs = signs;
     }
 
     /*основной метод вызывающий все вычисления*/
     public double calculateExpression() {
-        return calculations(0, ciphers, signs);
+        return calculations(0, thisCiphers, signs);
     }
 
     /*осуществляет вычисления через сложение согласно приоритету операторов и скобок*/
@@ -36,8 +36,9 @@ public class Calculator {
             int indxParenthClose = signs.indexOf(')');
 
             /*находит индекс закрывающей скобки блока*/
-            if (indxParenthClose + 1 < signs.size() && signs.get(indxParenthClose + 1) == ')'){
-                indxParenthClose += 1;
+
+            while (indxParenthClose + 1 < signs.size() && signs.get(indxParenthClose + 1) == ')'){
+                indxParenthClose++;
                 pInp = true;
             }
             temp = calcParenthesisPriority(pInp,indxParenthOpen, indxParenthClose, signs, ciphers);
@@ -55,7 +56,7 @@ public class Calculator {
                     /*временно для теста*/ // TODO: 15.03.2016 удалить в конечной версии
         System.out.println("temp = " + temp);
         System.out.println("signs = " + signs);
-        System.out.println("ciphers = " + ciphers);
+        System.out.println("thisCiphers = " + ciphers);
 
         if (lo == hi) {
             if (sign == '-') {
@@ -71,6 +72,7 @@ public class Calculator {
         try {
             return ciphers.get(lo) + calculations(lo + 1, ciphers, signs); // рекурсивный вызов
         } catch (Exception e) {
+            sign = signs.get(signs.size() - 1);
             if (sign == '-') {
                 double res = ciphers.get(lo) - ciphers.get(lo + 1);
                 return res;
@@ -84,18 +86,23 @@ public class Calculator {
     /*передает выражение в скобках на вычисление и вставляет результат вместо этого выражения*/
     private double calcParenthesisPriority(boolean pInP, int lo, int hi, List<Character> signs, List<Double> ciphers) {
         double temp = 0;
+        int dim=0;
         int hiForCiphers=hi;
         if(pInP){
+            dim=2;
             int indx = 0;
             while(signs.get(hi-indx)==')'){
-                hiForCiphers--;
+                if(indx>=2){
+                    dim*=2;
+                }
                 indx++;
             }
+
         }
         pInP=false;
 
         List<Character> sublistSigns = signs.subList(lo, hi + 1);
-        List<Double> sublistCiphers = ciphers.subList(lo, hiForCiphers);
+        List<Double> sublistCiphers = ciphers.subList(lo, hi-dim);
         sublistSigns.remove(0);
         sublistSigns.remove(sublistSigns.size() - 1);
         if (sublistSigns.contains('(')) {
