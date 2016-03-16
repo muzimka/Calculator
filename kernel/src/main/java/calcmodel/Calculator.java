@@ -57,11 +57,9 @@ public class Calculator {
         System.out.println("temp = " + temp);
         System.out.println("signs = " + signs);
         System.out.println("thisCiphers = " + ciphers);
-
         if (lo == hi) {
             return operationChooser(lo, ciphers, sign);
         }
-
         try {
             return ciphers.get(lo) + calculations(lo + 1, ciphers, signs); // рекурсивный вызов
         } catch (Exception e) {
@@ -73,6 +71,10 @@ public class Calculator {
     private double operationChooser(int lo, List<Double> ciphers, char sign) {
         if(sign== '-' && ciphers.get(lo + 1)<0){
             double res = ciphers.get(lo) + ciphers.get(lo + 1);
+            return res;
+        }
+        if(sign== '+' && ciphers.get(lo)<0){
+            double res = ciphers.get(lo) - ciphers.get(lo + 1);
             return res;
         }
         if (sign == '-') {
@@ -101,7 +103,6 @@ public class Calculator {
 
         }
         pInP=false;
-
         List<Character> sublistSigns = signs.subList(lo, hi + 1);
         List<Double> sublistCiphers = ciphers.subList(lo, hi-dim);
         sublistSigns.remove(0);
@@ -115,7 +116,7 @@ public class Calculator {
                 indxParenthClose += 1;
                 pInP=true;
             }
-            temp = calcParenthesisPriority(pInP,indxParenthOpen, indxParenthClose, sublistSigns, sublistCiphers);
+            temp = calcParenthesisPriority(pInP,indxParenthOpen, indxParenthClose, sublistSigns, sublistCiphers); //рекурсивный вызов
             sublistCiphers.add(indxParenthOpen, temp);
         }
         double res = calculations(0, sublistCiphers, sublistSigns);
