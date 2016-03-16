@@ -45,12 +45,14 @@ public class CalcTestJunit {
         clc2 = new Calculator(ciphers2,signs2);
 
         /*init clc3*/
+
         ciphers3 = new LinkedList<Double>();
         signs3 = new LinkedList<Character>();
         /*5+2*(3+2*(3+2))=31*/
         ciphers3.addAll(Arrays.asList(5.,2.,3.,2.,3.,2.));
         signs3.addAll(Arrays.asList( '+','*','(','+','*','(','+',')',')'));
         clc3 = new Calculator(ciphers3,signs3);
+
 
         /*init clc4*/
         ciphers4 = new LinkedList<Double>();
@@ -81,10 +83,11 @@ public class CalcTestJunit {
 
 
         /*test clc3*/
-       /* x = clc3.calculateExpression(0);
+        System.out.println("\n5+2*(3+2*(3+2))");
+        x = clc3.calculateExpression();
         bd = new BigDecimal(x, MathContext.DECIMAL32);
         res = bd.setScale(1, RoundingMode.UP);
-        assertEquals(res,BigDecimal.valueOf(31.000));*/
+        assertEquals("clc3",BigDecimal.valueOf(31.000),res);
 
         /*test clc4*/
         x = clc4.calculateExpression();
