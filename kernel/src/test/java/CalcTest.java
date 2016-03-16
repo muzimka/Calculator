@@ -35,11 +35,11 @@ public class CalcTest {
         String exp = "2+3*(2+2)-3*(2+1)";//5
         String exp1 = "2/2";
         String exp2 = "5+2*(3-2)"; //=7
-        String exp3 = "2+12-9"; //=5
-        String exp4 = "2*(2+2*(2+2))"; //=20
+        String exp3 = "2+(12-9)"; //=5
+        String exp4 = "2*(3+2*(2+2))"; //=22
         String exp5 = "5+2*(3+2*(3+2))"; //=31
 
-        UserInputParser userInputParser = new UserInputParser(exp5);
+        UserInputParser userInputParser = new UserInputParser(exp2);
         Calculator calculator = new Calculator(userInputParser.getCiphersList(),userInputParser.getSignsList());
         System.out.println(calculator.calculateExpression());
 
