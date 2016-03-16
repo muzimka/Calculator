@@ -59,8 +59,13 @@ public class Calculator {
         System.out.println("thisCiphers = " + ciphers);
 
         if (lo == hi) {
-            if (sign == '-') {
+           if(sign== '-' && ciphers.get(lo + 1)<0){
+               double res = ciphers.get(lo) + ciphers.get(lo + 1);
+               return res;
+           }
 
+
+            if (sign == '-') {
                 double res = ciphers.get(lo) - ciphers.get(lo + 1);
                 return res;
             } else {
@@ -73,6 +78,10 @@ public class Calculator {
             return ciphers.get(lo) + calculations(lo + 1, ciphers, signs); // рекурсивный вызов
         } catch (Exception e) {
             sign = signs.get(signs.size() - 1);
+            if(sign=='-' && ciphers.get(lo + 1)<0){
+                double res = ciphers.get(lo) + ciphers.get(lo + 1);
+                return res;
+            }
             if (sign == '-') {
                 double res = ciphers.get(lo) - ciphers.get(lo + 1);
                 return res;
@@ -93,7 +102,7 @@ public class Calculator {
             int indx = 0;
             while(signs.get(hi-indx)==')'){
                 if(indx>=2){
-                    dim*=2;
+                    dim+=2;
                 }
                 indx++;
             }
@@ -110,7 +119,7 @@ public class Calculator {
             int indxParenthClose = sublistSigns.indexOf(')');
 
             /*находит индекс закрывающей скобки блока*/
-            if (indxParenthClose + 1 < sublistSigns.size() && sublistSigns.get(indxParenthClose + 1) == ')') {
+            while (indxParenthClose + 1 < sublistSigns.size() && sublistSigns.get(indxParenthClose + 1) == ')') {
                 indxParenthClose += 1;
                 pInP=true;
             }
