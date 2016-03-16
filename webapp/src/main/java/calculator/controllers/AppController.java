@@ -1,10 +1,7 @@
 package calculator.controllers;
 
 
-import calculator.model.Calculator;
 import calculator.model.UserInputParser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +37,17 @@ public class AppController {
             return "calculator";
         }
         Calculator calculator = new Calculator(userInputParser.getCiphersList(),userInputParser.getSignsList());
-        double x = calculator.calculateExpression();
+
+        double x = 0;
+        try {
+            x = calculator.calculateExpression();
+        } catch (Exception e) {
+            error = "Ошибка пользовательского ввода";
+            model.addAttribute("error",error);
+            return "calculator";
+        }
+
+
         BigDecimal bd = new BigDecimal(x, MathContext.DECIMAL32);
         BigDecimal res = bd.setScale(3, RoundingMode.FLOOR);
         model.addAttribute("result",res);

@@ -47,8 +47,16 @@ public class CalcTest {
         String exp12 = "(4+2)*2-3"; //=9
         String exp13 = "3+(4+2)*2"; //=15
         String exp14 = "3-(4+2)*2"; //=-9
+        String exp15 = "3+2*(6+8*(7+2))"; //= 159
+        String exp16 = "6*+11"; //=exception
+        String exp17 = "6**11"; //=66
+        String exp18 = "-+111"; //=exception
+        String exp19 = "5/0"; //=exception
+        String exp20 = "3+2*(6+8*(7+2))/0"; //=exception
+        String exp21 = "4   +      8   *    7"; //=60
+        String exp22 = "2+2*(3+3*(2-3*(2+2*(1+1))))"; //
 
-        UserInputParser userInputParser = new UserInputParser(exp14);
+        UserInputParser userInputParser = new UserInputParser(exp22);
         Calculator calculator = new Calculator(userInputParser.getCiphersList(),userInputParser.getSignsList());
         System.out.println(calculator.calculateExpression());
 

@@ -63,7 +63,7 @@ public class UserInputParser {
 
     /*`первичная проверка на отсутствие символов никогда не принимающих участие в выражении*/
     private boolean isValid() {
-        return input.matches("[0-9.*+-/()]+");
+        return input.matches("[0-9.*+-/() ]+");
     }
 
     private LinkedList<String> getTokens(String pattern) {
@@ -79,6 +79,8 @@ public class UserInputParser {
 
     /*создает два листа 1. с цифрами 2. с операторами*/
     private void parseInput() {
+        input.replaceAll("\\s+", "");
+        System.out.println("input = " + input);
         LinkedList<String>  tempCiphers= getTokens("[0-9.]+");
         LinkedList<String>  tempSigns= getTokens("[\\*\\+\\-/]+|\\(|\\)");
         convertStringsList(tempCiphers, tempSigns);
@@ -86,8 +88,16 @@ public class UserInputParser {
 
     private void convertStringsList(LinkedList<String> tempCiphers, LinkedList<String> tempSigns) {
         for (String tempSign : tempSigns) {
-            char temp = tempSign.toCharArray()[0];
-            signs.add(temp);
+            char firstSign = tempSign.toCharArray()[0];
+            char[] chars = tempSign.toCharArray();
+            if(chars.length>1){
+                for (int i = 1; i <= chars.length-1; i++) {
+                    if(firstSign!=chars[i]){
+                        throw new IllegalArgumentException();
+                    }
+                }
+            }
+            signs.add(firstSign);
         }
         for (String tempCipher : tempCiphers) {
             double temp = Double.valueOf(tempCipher);

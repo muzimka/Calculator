@@ -129,6 +129,9 @@ public class Calculator {
         int indx = signs.indexOf(operation);
         signs.remove(indx);
         if (operation == '/') {
+            if(ciphers.get(indx + 1)==0){
+                throw new ArithmeticException("Trying divide by Zero");
+            }
             temp = ciphers.get(indx) / ciphers.get(indx + 1);
         } else {
             temp = ciphers.get(indx) * ciphers.get(indx + 1);
