@@ -27,45 +27,64 @@ public class Calculator {
         char multpl = '*';
         char divide = '/';
         double temp = 0;
-        if (signs.contains('(')) {
+
+        while (signs.contains('(')) {
+            boolean parInpar=false;
             int indxParenthOpen = signs.indexOf('(');
             int indxParenthClose = signs.indexOf(')');
-
-            temp = calcParenthesisPriority(indxParenthOpen, indxParenthClose);
+            if(indxParenthClose+1<signs.size() && signs.get(indxParenthClose+1)==')'){
+                indxParenthClose+=1;
+                parInpar=true;
+            }
+            temp = calcParenthesisPriority(indxParenthOpen, indxParenthClose,parInpar);
             ciphers.add(indxParenthOpen, temp);
-            /*временно для теста*/ // TODO: 15.03.2016 удалить в конечной версии
-            System.out.println("temp = " + temp);
-            System.out.println("signs = " + signs);
-            System.out.println("ciphers = " + ciphers);
         }
-        if (signs.contains(multpl)) {
+        while (signs.contains(multpl)) {
             calcOperationPriority(multpl);
         }
-        if (signs.contains(divide)) {
+        while (signs.contains(divide)) {
             calcOperationPriority(divide);
         }
+        if(ciphers.size()==1){
+            return ciphers.remove(0);
+        }
+                    /*временно для теста*/ // TODO: 15.03.2016 удалить в конечной версии
+        System.out.println("temp = " + temp);
+        System.out.println("signs = " + signs);
+        System.out.println("ciphers = " + ciphers);
+
         if (lo == hi) {
             if (sign == '-') {
-                changeCipherToNegative(lo, ciphers);
+
+                double res = ciphers.get(lo) - ciphers.get(lo + 1);
+                return res;
+            }else{
+                double res = ciphers.get(lo) + ciphers.get(lo + 1);
+                return res;
             }
-            double res = ciphers.get(lo) + ciphers.get(lo + 1);
-            return res;
         }
 
-        try {
+       try {
             return ciphers.get(lo) + calculations(lo + 1, ciphers, signs); // рекурсивный вызов
         } catch (Exception e) {
             if (sign == '-') {
-                changeCipherToNegative(lo, ciphers);
+                double res = ciphers.get(lo) - ciphers.get(lo + 1);
+                return res;
+            }else{
+                double res = ciphers.get(lo) + ciphers.get(lo + 1);
+                return res;
             }
-            return ciphers.get(lo) + ciphers.get(lo + 1);
         }
     }
 
     /*передает выражение в скобках на вычисление и вставляет результат вместо этого выражения*/
-    private double calcParenthesisPriority(int lo, int hi) {
+    private double calcParenthesisPriority(int lo, int hi, boolean parInpar) {
+        int hiForCiphers =hi;
+        if(parInpar){
+            hiForCiphers =hi-3;
+        }
         List<Character> sublistSigns = signs.subList(lo, hi + 1);
-        List<Double> sublistCiphers = ciphers.subList(lo, hi);
+        List<Double> sublistCiphers = ciphers.subList(lo, hiForCiphers);
         sublistSigns.remove(0);
         sublistSigns.remove(sublistSigns.size() - 1);
         double res = calculations(0, sublistCiphers, sublistSigns);
@@ -90,7 +109,7 @@ public class Calculator {
 
     /*меняет положительный знак цифры на отрицательный*/
     private void changeCipherToNegative(int lo, List<Double> ciphers) {
-        double x = -ciphers.get(lo + 1);
-        ciphers.set(lo + 1, x);
+        double x = -ciphers.get(lo);
+        ciphers.set(lo, x);
     }
 }

@@ -1,4 +1,5 @@
 import calcmodel.Calculator;
+import calcmodel.UserInputParser;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -13,10 +14,10 @@ public class CalcTest {
 
     public static void main(String[] args)  {
 
-        LinkedList<Double> ciphers = new LinkedList<Double>();
+        /*LinkedList<Double> ciphers = new LinkedList<Double>();
         LinkedList<Character> signs = new LinkedList<Character>();
 
-        /*5+2*(3-2) = 7*/
+        *//*5+2*(3-2) = 7*//*
         ciphers.addAll(Arrays.asList(5.,2.,3.,2.));
         signs.addAll(Arrays.asList( '+','*','(','-',')'));
         //signs.addAll(Arrays.asList(   '+', '*', '+'));
@@ -30,7 +31,16 @@ public class CalcTest {
 
         BigDecimal bd = new BigDecimal(x,MathContext.DECIMAL32);
         BigDecimal res = bd.setScale(4, RoundingMode.UP);
-        System.out.println(res);
+        System.out.println(res);*/
+        String exp = "2+3*(2+2)-3*(2+1)";//5
+        String exp1 = "2/2";
+        String exp2 = "5+2*(3-2)"; //=7
+        String exp3 = "2+12-9"; //=5
+        String exp4 = "2*(2+2*(2+2))"; //=20
+
+        UserInputParser userInputParser = new UserInputParser(exp4);
+        Calculator calculator = new Calculator(userInputParser.getCiphersList(),userInputParser.getSignsList());
+        System.out.println(calculator.calculateExpression());
 
     }
 

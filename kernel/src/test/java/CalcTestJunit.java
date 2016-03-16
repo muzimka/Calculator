@@ -17,12 +17,15 @@ public class CalcTestJunit {
     LinkedList<Double> ciphers1;
     LinkedList<Double> ciphers2;
     LinkedList<Double> ciphers3;
+    LinkedList<Double> ciphers4;
     LinkedList<Character> signs1;
     LinkedList<Character> signs2;
     LinkedList<Character> signs3;
+    LinkedList<Character> signs4;
     Calculator clc1;
     Calculator clc2;
     Calculator clc3;
+    Calculator clc4;
 
     @Before
             public void init(){
@@ -49,6 +52,13 @@ public class CalcTestJunit {
         signs3.addAll(Arrays.asList( '+','*','(','+','*','(','+',')',')'));
         clc3 = new Calculator(ciphers3,signs3);
 
+        /*init clc4*/
+        ciphers4 = new LinkedList<Double>();
+        signs4 = new LinkedList<Character>();
+        /*2+3*(2+2)-3*(2+1)=5*/
+        ciphers4.addAll(Arrays.asList(2.,3.,2.,2.,3.,2.,1.));
+        signs4.addAll(Arrays.asList( '+','*','(','+',')','-','*','(','+',')'));
+        clc4 = new Calculator(ciphers4,signs4);
 
 
     }
@@ -60,13 +70,14 @@ public class CalcTestJunit {
         double x = clc1.calculateExpression();
         BigDecimal bd = new BigDecimal(x, MathContext.DECIMAL32);
         BigDecimal res = bd.setScale(4, RoundingMode.UP);
-        assertEquals(res,BigDecimal.valueOf(10.6667));
+        assertEquals("clc1",BigDecimal.valueOf(10.6667),res);
 
         /*test clc2*/
          x = clc2.calculateExpression();
          bd = new BigDecimal(x, MathContext.DECIMAL32);
          res = bd.setScale(1, RoundingMode.UP);
-        assertEquals(res,BigDecimal.valueOf(7.000));
+        System.out.println("res = " + res);
+        assertEquals("clc2",BigDecimal.valueOf(7.0),res);
 
 
         /*test clc3*/
@@ -74,6 +85,13 @@ public class CalcTestJunit {
         bd = new BigDecimal(x, MathContext.DECIMAL32);
         res = bd.setScale(1, RoundingMode.UP);
         assertEquals(res,BigDecimal.valueOf(31.000));*/
+
+        /*test clc4*/
+        x = clc4.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc4",BigDecimal.valueOf(5.0),res);
+
 
     }
 

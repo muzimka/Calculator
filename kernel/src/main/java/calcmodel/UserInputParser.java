@@ -8,8 +8,8 @@ import java.util.regex.Pattern;
 
 public class UserInputParser {
     private String input;
-    private List<Double> ciphers;
-    private List<Character> signs;
+    private LinkedList<Double> ciphers;
+    private LinkedList<Character> signs;
 
     public UserInputParser() {
         ciphers = new LinkedList<Double>();
@@ -27,7 +27,11 @@ public class UserInputParser {
     public UserInputParser(String userInput) {
         ciphers = new LinkedList<Double>();
         signs = new LinkedList<Character>();
-        this.input = userInput;
+        this.input= userInput;
+        if(!isValid()){
+            throw new IllegalArgumentException();
+        }
+        parseInput();
     }
 
     /*читает ввод из файла для тестирования*/
@@ -91,11 +95,11 @@ public class UserInputParser {
         }
     }
 
-    public List<Double> getCiphersList() {
+    public LinkedList<Double> getCiphersList() {
         return ciphers;
     }
 
-    public List<Character> getSignsList() {
+    public LinkedList<Character> getSignsList() {
         return signs;
     }
 }
