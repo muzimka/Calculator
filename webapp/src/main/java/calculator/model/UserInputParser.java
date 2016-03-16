@@ -18,7 +18,6 @@ public class UserInputParser {
     public UserInputParser() {
         ciphers = new LinkedList<Double>();
         signs = new LinkedList<Character>();
-
         readInput();
     }
 
@@ -67,6 +66,9 @@ public class UserInputParser {
 
     /*`первичная проверка на отсутствие символов никогда не принимающих участие в выражении*/
     private boolean isValid() {
+        if(input.length()<=1){
+            return false;
+        }
         return input.matches("[0-9.*+-/()]+");
     }
 
