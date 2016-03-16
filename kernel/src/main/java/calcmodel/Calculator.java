@@ -59,36 +59,28 @@ public class Calculator {
         System.out.println("thisCiphers = " + ciphers);
 
         if (lo == hi) {
-           if(sign== '-' && ciphers.get(lo + 1)<0){
-               double res = ciphers.get(lo) + ciphers.get(lo + 1);
-               return res;
-           }
-
-
-            if (sign == '-') {
-                double res = ciphers.get(lo) - ciphers.get(lo + 1);
-                return res;
-            } else {
-                double res = ciphers.get(lo) + ciphers.get(lo + 1);
-                return res;
-            }
+            return operationChooser(lo, ciphers, sign);
         }
 
         try {
             return ciphers.get(lo) + calculations(lo + 1, ciphers, signs); // рекурсивный вызов
         } catch (Exception e) {
             sign = signs.get(signs.size() - 1);
-            if(sign=='-' && ciphers.get(lo + 1)<0){
-                double res = ciphers.get(lo) + ciphers.get(lo + 1);
-                return res;
-            }
-            if (sign == '-') {
-                double res = ciphers.get(lo) - ciphers.get(lo + 1);
-                return res;
-            } else {
-                double res = ciphers.get(lo) + ciphers.get(lo + 1);
-                return res;
-            }
+            return operationChooser(lo, ciphers, sign);
+        }
+    }
+
+    private double operationChooser(int lo, List<Double> ciphers, char sign) {
+        if(sign== '-' && ciphers.get(lo + 1)<0){
+            double res = ciphers.get(lo) + ciphers.get(lo + 1);
+            return res;
+        }
+        if (sign == '-') {
+            double res = ciphers.get(lo) - ciphers.get(lo + 1);
+            return res;
+        } else {
+            double res = ciphers.get(lo) + ciphers.get(lo + 1);
+            return res;
         }
     }
 
