@@ -42,6 +42,8 @@ public class CalcTestJunit {
     UserInputParser mInputParser23;
     UserInputParser mInputParser24;
     UserInputParser mInputParser25;
+    UserInputParser mInputParser26;
+    UserInputParser mInputParser27;
     Calculator clc1;
     Calculator clc2;
     Calculator clc3;
@@ -67,6 +69,8 @@ public class CalcTestJunit {
     Calculator clc23;
     Calculator clc24;
     Calculator clc25;
+    Calculator clc26;
+    Calculator clc27;
     String exp = "2+3*(2+2)-3*(2+1)";//5
     String exp1 = "2/2";
     String exp2 = "5+2*(3-2)"; //=7
@@ -92,6 +96,8 @@ public class CalcTestJunit {
     String exp22 = "2+2*(3+3*(2-3*(2-3*(2+2*(1+1)))))"; //-268
     String exp23 = "5+2*(3+1-2*(3+2))"; // -7
     String exp24 = "5+2*(3+1-2*(3+2))+2"; // -5
+    String exp25 ="2*(3+2*(2+2)+2)";//26
+    String exp26 ="2*(3+2*(2+2)+2+3+4)";//40
 
     @Before
     public void init() {
@@ -191,6 +197,16 @@ public class CalcTestJunit {
 /*init clc25*/
         mInputParser25 = new UserInputParser(exp24);
         clc25= new Calculator(mInputParser25.getCiphersList(), mInputParser25.getSignsList());
+
+
+/*init clc26*/
+        mInputParser26 = new UserInputParser(exp25);
+        clc26= new Calculator(mInputParser26.getCiphersList(), mInputParser26.getSignsList());
+
+
+/*init clc27*/
+        mInputParser27 = new UserInputParser(exp26);
+        clc27= new Calculator(mInputParser27.getCiphersList(), mInputParser27.getSignsList());
     }
 
 
@@ -350,5 +366,20 @@ public class CalcTestJunit {
         bd = new BigDecimal(x, MathContext.DECIMAL32);
         res = bd.setScale(1, RoundingMode.UP);
         assertEquals("clc25", BigDecimal.valueOf(-5.0), res);
+
+/*test clc26*/
+        x = clc26.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc26", BigDecimal.valueOf(26.0), res);
+
+/*test clc27*/
+        x = clc27.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc27", BigDecimal.valueOf(40.0), res);
+
+
     }
+
 }

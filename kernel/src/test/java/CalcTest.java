@@ -40,8 +40,9 @@ public class CalcTest {
         String exp23 = "5+2*(3+1-2*(3+2))"; // -7
         String exp24 = "5+2*(3+1-2*(3+2))+2"; // -5
         String exp25 ="2*(3+2*(2+2)+2)";//26
+        String exp26 ="2*(3+2*(2+2)+2+3+4)";//40
 
-        UserInputParser userInputParser = new UserInputParser(exp25);
+        UserInputParser userInputParser = new UserInputParser(exp26);
         Calculator calculator = new Calculator(userInputParser.getCiphersList(),userInputParser.getSignsList());
         System.out.println(calculator.calculateExpression());
     }

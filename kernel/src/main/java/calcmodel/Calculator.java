@@ -33,15 +33,37 @@ public class Calculator {
 
             boolean pInp = false;
             int indxParenthOpen = signs.indexOf('(');
-            int indxParenthClose = signs.indexOf(')');
+            int indxOfFirstParenthClose = signs.indexOf(')');
+            int numOfParenthBlocks = 0;
 
-            /*находит индекс закрывающей скобки блока*/
+            /*считает кол-во скобок внутренних блоков*/
+            int i = 1;
+            while (signs.get(indxParenthOpen + i) != ')') {
+                if (signs.get(indxParenthOpen + i) == '(') {
+                    numOfParenthBlocks++;
 
-            while (indxParenthClose + 1 < signs.size() && signs.get(indxParenthClose + 1) == ')'){
-                indxParenthClose++;
+                }
+                i++;
+            }
+            /*переводит в true  если имеются внутренние блоки*/
+            if (numOfParenthBlocks > 0) {
                 pInp = true;
             }
-            temp = calcParenthesisPriority(pInp,indxParenthOpen, indxParenthClose, signs, ciphers);
+            int indxParenthClose = findIndxParenthClose(signs, indxOfFirstParenthClose, numOfParenthBlocks);
+
+            /*реализация переноса цифр после скобок в начало*/
+           /* int x = 1;
+           Queue<Integer> indxOfSigns = new LinkedList<Integer>();
+            while (signs.get(indxParenthClose-x) != ')'){
+                indxOfSigns.add(indxParenthClose-x);
+                x++;
+            }
+            x-=1;
+            Queue<Character> subOffsetSigns = (Queue) signs.subList(indxParenthClose - x, indxParenthClose);
+
+*/
+
+            temp = calcParenthesisPriority(pInp, indxParenthOpen, indxParenthClose, signs, ciphers);
             ciphers.add(indxParenthOpen, temp);
         }
         while (signs.contains(multpl)) {
@@ -68,43 +90,26 @@ public class Calculator {
         }
     }
 
-    private double operationChooser(int lo, List<Double> ciphers, char sign) {
-        if(sign== '-' && ciphers.get(lo + 1)<0){
-            double res = ciphers.get(lo) + ciphers.get(lo + 1);
-            return res;
-        }
-        if(sign== '+' && ciphers.get(lo)<0 && ciphers.get(lo+1)<0){
-            double res = ciphers.get(lo) + ciphers.get(lo + 1);
-            return res;
-        }
-        if (sign == '-') {
-            double res = ciphers.get(lo) - ciphers.get(lo + 1);
-            return res;
-        } else {
-            double res = ciphers.get(lo) + ciphers.get(lo + 1);
-            return res;
-        }
-    }
 
     /*передает выражение в скобках на вычисление и вставляет результат вместо этого выражения*/
     private double calcParenthesisPriority(boolean pInP, int lo, int hi, List<Character> signs, List<Double> ciphers) {
         double temp = 0;
-        int dim=0;
-        int hiForCiphers=hi;
-        if(pInP){
-            dim=2;
+        int dim = 0;
+        int hiForCiphers = hi;
+        if (pInP) {
+            dim = 2;
             int indx = 0;
-            while(signs.get(hi-indx)==')'){
-                if(indx>=2){
-                    dim+=2;
+            while (signs.get(hi - indx) == ')') {
+                if (indx >= 2) {
+                    dim += 2;
                 }
                 indx++;
             }
 
         }
-        pInP=false;
+        pInP = false;
         List<Character> sublistSigns = signs.subList(lo, hi + 1);
-        List<Double> sublistCiphers = ciphers.subList(lo, hi-dim);
+        List<Double> sublistCiphers = ciphers.subList(lo, hi - dim);
         sublistSigns.remove(0);
         sublistSigns.remove(sublistSigns.size() - 1);
         if (sublistSigns.contains('(')) {
@@ -114,9 +119,9 @@ public class Calculator {
             /*находит индекс закрывающей скобки блока*/
             while (indxParenthClose + 1 < sublistSigns.size() && sublistSigns.get(indxParenthClose + 1) == ')') {
                 indxParenthClose += 1;
-                pInP=true;
+                pInP = true;
             }
-            temp = calcParenthesisPriority(pInP,indxParenthOpen, indxParenthClose, sublistSigns, sublistCiphers); //рекурсивный вызов
+            temp = calcParenthesisPriority(pInP, indxParenthOpen, indxParenthClose, sublistSigns, sublistCiphers); //рекурсивный вызов
             sublistCiphers.add(indxParenthOpen, temp);
         }
         double res = calculations(0, sublistCiphers, sublistSigns);
@@ -131,7 +136,7 @@ public class Calculator {
         int indx = signs.indexOf(operation);
         signs.remove(indx);
         if (operation == '/') {
-            if(ciphers.get(indx + 1)==0){
+            if (ciphers.get(indx + 1) == 0) {
                 throw new ArithmeticException("Trying divide by Zero");
             }
             temp = ciphers.get(indx) / ciphers.get(indx + 1);
@@ -141,5 +146,40 @@ public class Calculator {
         ciphers.set(indx, temp);
         ciphers.remove(indx + 1);
     }
+
+    private double operationChooser(int lo, List<Double> ciphers, char sign) {
+        if (sign == '-' && ciphers.get(lo + 1) < 0) {
+            double res = ciphers.get(lo) + ciphers.get(lo + 1);
+            return res;
+        }
+        if (sign == '+' && ciphers.get(lo) < 0 && ciphers.get(lo + 1) < 0) {
+            double res = ciphers.get(lo) + ciphers.get(lo + 1);
+            return res;
+        }
+        if (sign == '-') {
+            double res = ciphers.get(lo) - ciphers.get(lo + 1);
+            return res;
+        } else {
+            double res = ciphers.get(lo) + ciphers.get(lo + 1);
+            return res;
+        }
+    }
+
+    private int findIndxParenthClose(List<Character> signs, int indxParenthClose, int countParenth) {
+        int increaseStep = 1;
+        int countStep =1;
+       int firstParClose = indxParenthClose;
+
+        while (countStep <=countParenth) {
+            if (signs.get(firstParClose + increaseStep) == ')') {
+                countStep++;
+
+            }
+            indxParenthClose++;
+            increaseStep++;
+        }
+        return indxParenthClose;
+    }
+
 
 }
