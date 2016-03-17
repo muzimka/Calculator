@@ -31,29 +31,7 @@ public class Calculator {
         int count = 0;
 
         while (signs.contains('(')) {
-
-            boolean pInp = false;
-            int indxParenthOpen = signs.indexOf('(');
-            int indxOfFirstParenthClose = signs.indexOf(')');
-            int numOfParenthBlocks = 0;
-
-            /*считает кол-во скобок внутренних блоков*/
-            int i = 1;
-            while (signs.get(indxParenthOpen + i) != ')') {
-                if (signs.get(indxParenthOpen + i) == '(') {
-                    numOfParenthBlocks++;
-
-                }
-                i++;
-            }
-            /*переводит в true  если имеются внутренние блоки*/
-            if (numOfParenthBlocks > 0) {
-                pInp = true;
-            }
-            int indxParenthClose = findIndxParenthClose(signs, indxOfFirstParenthClose, numOfParenthBlocks);
-
-            temp = calcParenthesisPriority(pInp, indxParenthOpen, indxParenthClose, signs, ciphers);
-            ciphers.add(indxParenthOpen, temp);
+            calcParenthesis(ciphers, signs);
         }
         while (signs.contains(multpl)) {
             calcOperationPriority(multpl, signs, ciphers);
@@ -80,6 +58,8 @@ public class Calculator {
     }
 
 
+
+
     /*передает выражение в скобках на вычисление и вставляет результат вместо этого выражения*/
     private double calcParenthesisPriority(boolean pInP, int lo, int hi, List<Character> signs, List<Double> ciphers) {
         double temp = 0;
@@ -91,43 +71,14 @@ public class Calculator {
         sublistSigns.remove(0);
         sublistSigns.remove(sublistSigns.size() - 1);
         while (sublistSigns.contains('(')) {
-            int indxParenthOpen = sublistSigns.indexOf('(');
-            int indxParenthClose = sublistSigns.indexOf(')');
-
-            //*находит индекс закрывающей скобки вложенного блока*//*
-            while (indxParenthClose + 1 < sublistSigns.size() && sublistSigns.get(indxParenthClose + 1) == ')') {
-                indxParenthClose += 1;
-                pInP = true;
-            }
-
-         /*   boolean pInp = false;
-            int indxParenthOpen = sublistSigns.indexOf('(');
-            int indxOfFirstParenthClose = sublistSigns.indexOf(')');
-            int numOfParenthBlocks = 0;
-
-            *//*считает кол-во скобок внутренних блоков*//*
-            int i = 1;
-            while (sublistSigns.get(indxParenthOpen + i) != ')') {
-                if (sublistSigns.get(indxParenthOpen + i) == '(') {
-                    numOfParenthBlocks++;
-
-                }
-                i++;
-            }
-            *//*переводит в true  если имеются внутренние блоки*//*
-            if (numOfParenthBlocks > 0) {
-                pInp = true;
-            }
-            int indxParenthClose = findIndxParenthClose(sublistSigns, indxOfFirstParenthClose, numOfParenthBlocks);
-*/
-            temp = calcParenthesisPriority(pInP, indxParenthOpen, indxParenthClose, sublistSigns, sublistCiphers); //рекурсивный вызов
-            sublistCiphers.add(indxParenthOpen, temp);
+            calcParenthesis(sublistCiphers,sublistSigns);
         }
         double res = calculations(0, sublistCiphers, sublistSigns);
         sublistSigns.removeAll(sublistSigns);
         sublistCiphers.removeAll(sublistCiphers);
         return res;
     }
+
 
     private int makeOffset(boolean pInP, List<Character> signs) {
         int offset = 0;
@@ -193,5 +144,30 @@ public class Calculator {
         return indxParenthClose;
     }
 
+    private void calcParenthesis(List<Double> ciphers, List<Character> signs) {
+        double temp;
+        boolean pInp = false;
+        int indxParenthOpen = signs.indexOf('(');
+        int indxOfFirstParenthClose = signs.indexOf(')');
+        int numOfParenthBlocks = 0;
 
+            /*считает кол-во скобок внутренних блоков*/
+        int i = 1;
+        while (signs.get(indxParenthOpen + i) != ')') {
+            if (signs.get(indxParenthOpen + i) == '(') {
+                numOfParenthBlocks++;
+
+            }
+            i++;
+        }
+            /*переводит в true  если имеются внутренние блоки*/
+        if (numOfParenthBlocks > 0) {
+            pInp = true;
+        }
+        int indxParenthClose = findIndxParenthClose(signs, indxOfFirstParenthClose, numOfParenthBlocks);
+
+        temp = calcParenthesisPriority(pInp, indxParenthOpen, indxParenthClose, signs, ciphers);
+        ciphers.add(indxParenthOpen, temp);
+
+    }
 }
