@@ -14,24 +14,6 @@ public class CalcTest {
 
     public static void main(String[] args)  {
 
-        /*LinkedList<Double> ciphers = new LinkedList<Double>();
-        LinkedList<Character> signs = new LinkedList<Character>();
-
-        *//*5+2*(3-2) = 7*//*
-        ciphers.addAll(Arrays.asList(5.,2.,3.,2.));
-        signs.addAll(Arrays.asList( '+','*','(','-',')'));
-        //signs.addAll(Arrays.asList(   '+', '*', '+'));
-
-        Calculator clc = new Calculator(ciphers,signs);
-
-        double x = 0;
-
-            x = clc.calculateExpression();
-
-
-        BigDecimal bd = new BigDecimal(x,MathContext.DECIMAL32);
-        BigDecimal res = bd.setScale(4, RoundingMode.UP);
-        System.out.println(res);*/
         String exp = "2+3*(2+2)-3*(2+1)";//5
         String exp1 = "2/2";
         String exp2 = "5+2*(3-2)"; //=7
@@ -54,16 +36,12 @@ public class CalcTest {
         String exp19 = "5/0"; //=exception
         String exp20 = "3+2*(6+8*(7+2))/0"; //=exception
         String exp21 = "4   +      8   *    7"; //=60
+        String exp22 = "2+2*(3+3*(2-3*(2-3*(2+2*(1+1)))))"; //-268
         String exp23 = "5+2*(3+1-2*(3+2))"; // -7
         String exp24 = "5+2*(3+1-2*(3+2))+2"; // -5
-        String exp22 = "2+2*(3+3*(2-3*(2-3*(2+2*(1+1)))))"; //-268
 
-        UserInputParser userInputParser = new UserInputParser(exp22);
+        UserInputParser userInputParser = new UserInputParser(exp24);
         Calculator calculator = new Calculator(userInputParser.getCiphersList(),userInputParser.getSignsList());
         System.out.println(calculator.calculateExpression());
-
     }
-
-
-
 }

@@ -73,8 +73,8 @@ public class Calculator {
             double res = ciphers.get(lo) + ciphers.get(lo + 1);
             return res;
         }
-        if(sign== '+' && ciphers.get(lo)<0){
-            double res = ciphers.get(lo) - ciphers.get(lo + 1);
+        if(sign== '+' && ciphers.get(lo)<0 && ciphers.get(lo+1)<0){
+            double res = ciphers.get(lo) + ciphers.get(lo + 1);
             return res;
         }
         if (sign == '-') {
