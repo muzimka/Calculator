@@ -23,15 +23,18 @@ public class Calculator {
 
     /*осуществляет вычисления через сложение согласно приоритету операторов и скобок*/
     private double calculations(int lo, List<Double> ciphers, List<Character> signs) {
-        int hi = signs.size() - 1;
+        int hi = signs.size();
+        boolean hasParenth = false;
         char sign = signs.get(signs.size() - 1);
         char multpl = '*';
         char divide = '/';
         double temp = 0;
         int count = 0;
 
+
         while (signs.contains('(')) {
             calcParenthesis(ciphers, signs);
+
         }
         while (signs.contains(multpl)) {
             calcOperationPriority(multpl, signs, ciphers);
@@ -39,19 +42,30 @@ public class Calculator {
         while (signs.contains(divide)) {
             calcOperationPriority(divide, signs, ciphers);
         }
+
+
         if (ciphers.size() == 1) {
             return ciphers.remove(0);
         }
+
                     /*временно для теста*/ // TODO: 15.03.2016 удалить в конечной версии
         System.out.println("temp = " + temp);
         System.out.println("signs = " + signs);
         System.out.println("thisCiphers = " + ciphers);
+
         if (lo == hi) {
+            /**/
+            if(signs.get(lo-2)=='-'){
+                double t = ciphers.get(lo-1);
+                int ind = ciphers.indexOf(ciphers.get(lo-1));
+                ciphers.set(ind,-t);
+            }
             return operationChooser(lo, ciphers, sign);
         }
         try {
             return ciphers.get(lo) + calculations(lo + 1, ciphers, signs); // рекурсивный вызов
         } catch (Exception e) {
+
             sign = signs.get(signs.size() - 1);
             return operationChooser(lo, ciphers, sign);
         }
@@ -70,9 +84,16 @@ public class Calculator {
         List<Double> sublistCiphers = ciphers.subList(lo, hi - offset);
         sublistSigns.remove(0);
         sublistSigns.remove(sublistSigns.size() - 1);
+
+
+
+
+
+        /*если в во взятом блоке есть вложенный блок то погружаемся в него рекурсивно*/
         while (sublistSigns.contains('(')) {
             calcParenthesis(sublistCiphers,sublistSigns);
         }
+        /*если в блоке вложенных блоков больше нет, то переходим к вычислению*/
         double res = calculations(0, sublistCiphers, sublistSigns);
         sublistSigns.removeAll(sublistSigns);
         sublistCiphers.removeAll(sublistCiphers);
@@ -111,6 +132,8 @@ public class Calculator {
     }
 
     private double operationChooser(int lo, List<Double> ciphers, char sign) {
+       /**/
+
         if (sign == '-' && ciphers.get(lo + 1) < 0) {
             double res = ciphers.get(lo) + ciphers.get(lo + 1);
             return res;

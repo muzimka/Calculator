@@ -42,11 +42,15 @@ public class CalcTest {
         String exp25 ="2*(3+2*(2+2)+2)";//26
         String exp26 ="2*(3+2*(2+2)+2+3+4)";//40
         String exp27 ="10-(77/7+3*9-28)";//0
+        String exp28 ="132*(64/8-3*2*(3+2)+2)";// - 2640
+        String exp29 ="2*(2/2-3*2*(3+2*(3+2))+2)";//-150
+        String exp30 ="1-78+2";// - 75
+        String exp31 ="(1-78+2)";// - 75
 
-        String exp28 ="132*(64/8-3*2*(3+2)+2)";//
-        String exp29 ="2*(2/2-3*2*(3+2*(3+2))+2)";//-152
+        String exp32 ="2-1-78+2";//-75
+        String exp33 ="-2-1-78+2";//-79
 
-        UserInputParser userInputParser = new UserInputParser(exp29);
+        UserInputParser userInputParser = new UserInputParser(exp33);
         Calculator calculator = new Calculator(userInputParser.getCiphersList(),userInputParser.getSignsList());
         System.out.println(calculator.calculateExpression());
     }
