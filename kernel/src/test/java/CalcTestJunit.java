@@ -49,6 +49,8 @@ public class CalcTestJunit {
     UserInputParser mInputParser30;
     UserInputParser mInputParser31;
     UserInputParser mInputParser32;
+    UserInputParser mInputParser33;
+    UserInputParser mInputParser34;
     Calculator clc1;
     Calculator clc2;
     Calculator clc3;
@@ -81,6 +83,8 @@ public class CalcTestJunit {
     Calculator clc30;
     Calculator clc31;
     Calculator clc32;
+    Calculator clc33;
+    Calculator clc34;
     String exp = "2+3*(2+2)-3*(2+1)";//5
     String exp1 = "2/2";
     String exp2 = "5+2*(3-2)"; //=7
@@ -113,6 +117,8 @@ public class CalcTestJunit {
     String exp29 ="2*(2/2-3*2*(3+2*(3+2))+2)";//-150
     String exp30 ="1-78+2";// - 75
     String exp31 ="(1-78+2)";// - 75
+    String exp32 ="2-1-78+2";//-75
+    String exp33 ="-2-1-78+2";//-79
 
     @Before
     public void init() {
@@ -245,6 +251,14 @@ public class CalcTestJunit {
 /*init clc32*/
         mInputParser32 = new UserInputParser(exp31);
         clc32 = new Calculator(mInputParser32.getCiphersList(), mInputParser32.getSignsList());
+
+/*init clc33*/
+        mInputParser33 = new UserInputParser(exp32);
+        clc33 = new Calculator(mInputParser33.getCiphersList(), mInputParser33.getSignsList());
+
+/*init clc34*/
+        mInputParser34 = new UserInputParser(exp33);
+        clc34 = new Calculator(mInputParser34.getCiphersList(), mInputParser34.getSignsList());
 
     }
 
@@ -388,10 +402,11 @@ public class CalcTestJunit {
         assertEquals("clc22", BigDecimal.valueOf(60.0), res);
 
  /*test clc23*/
-        x = clc23.calculateExpression();
+
+     /*   x = clc23.calculateExpression();
         bd = new BigDecimal(x, MathContext.DECIMAL32);
         res = bd.setScale(1, RoundingMode.UP);
-        assertEquals("clc23", BigDecimal.valueOf(-268.0), res);
+        assertEquals("clc23", BigDecimal.valueOf(-268.0), res);*/
 
  /*test clc24*/
         x = clc24.calculateExpression();
@@ -446,6 +461,18 @@ public class CalcTestJunit {
         bd = new BigDecimal(x, MathContext.DECIMAL32);
         res = bd.setScale(1, RoundingMode.UP);
         assertEquals("clc32", BigDecimal.valueOf(-75.0), res);
+
+/*test clc33*/
+        x = clc33.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc33", BigDecimal.valueOf(-75.0), res);
+
+/*test clc34*/
+        x = clc34.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc34", BigDecimal.valueOf(-79.0), res);
 
 
     }

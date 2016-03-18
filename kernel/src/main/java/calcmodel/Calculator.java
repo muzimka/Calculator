@@ -23,19 +23,24 @@ public class Calculator {
 
     /*осуществляет вычисления через сложение согласно приоритету операторов и скобок*/
     private double calculations(int lo, List<Double> ciphers, List<Character> signs) {
-        int hi = signs.size();
-        boolean hasParenth = false;
-        char sign = signs.get(signs.size() - 1);
         char multpl = '*';
         char divide = '/';
         double temp = 0;
-        int count = 0;
-
 
         while (signs.contains('(')) {
             calcParenthesis(ciphers, signs);
 
         }
+        /*положительные */
+        for (Character sgn : signs) {
+            if (sgn == '-') {
+                int ind = signs.indexOf(sgn);
+                double tmp = ciphers.get(ind + 1);
+                ciphers.set(ind + 1, -tmp);
+                signs.set(ind, '+');
+            }
+        }
+
         while (signs.contains(multpl)) {
             calcOperationPriority(multpl, signs, ciphers);
         }
@@ -48,30 +53,18 @@ public class Calculator {
             return ciphers.remove(0);
         }
 
-                    /*временно для теста*/ // TODO: 15.03.2016 удалить в конечной версии
+        /*временно для теста*/ // TODO: 15.03.2016 удалить в конечной версии
         System.out.println("temp = " + temp);
         System.out.println("signs = " + signs);
         System.out.println("thisCiphers = " + ciphers);
 
-        if (lo == hi) {
-            /**/
-            if(signs.get(lo-2)=='-'){
-                double t = ciphers.get(lo-1);
-                int ind = ciphers.indexOf(ciphers.get(lo-1));
-                ciphers.set(ind,-t);
-            }
-            return operationChooser(lo, ciphers, sign);
-        }
         try {
             return ciphers.get(lo) + calculations(lo + 1, ciphers, signs); // рекурсивный вызов
         } catch (Exception e) {
-
-            sign = signs.get(signs.size() - 1);
-            return operationChooser(lo, ciphers, sign);
+            System.out.println("Exception: " + e.getMessage() + e.getClass());
+            return additionOperation(lo, ciphers);
         }
     }
-
-
 
 
     /*передает выражение в скобках на вычисление и вставляет результат вместо этого выражения*/
@@ -84,14 +77,9 @@ public class Calculator {
         List<Double> sublistCiphers = ciphers.subList(lo, hi - offset);
         sublistSigns.remove(0);
         sublistSigns.remove(sublistSigns.size() - 1);
-
-
-
-
-
         /*если в во взятом блоке есть вложенный блок то погружаемся в него рекурсивно*/
         while (sublistSigns.contains('(')) {
-            calcParenthesis(sublistCiphers,sublistSigns);
+            calcParenthesis(sublistCiphers, sublistSigns);
         }
         /*если в блоке вложенных блоков больше нет, то переходим к вычислению*/
         double res = calculations(0, sublistCiphers, sublistSigns);
@@ -104,7 +92,7 @@ public class Calculator {
     private int makeOffset(boolean pInP, List<Character> signs) {
         int offset = 0;
         if (pInP) {
-            offset=offset- offsetConstant;
+            offset = offset - offsetConstant;
             for (Character sign : signs) {
                 if (sign == '(' || sign == ')') {
                     offset++;
@@ -131,10 +119,12 @@ public class Calculator {
         ciphers.remove(indx + 1);
     }
 
-    private double operationChooser(int lo, List<Double> ciphers, char sign) {
+    private double additionOperation(int lo, List<Double> ciphers) {
        /**/
+        double res = ciphers.get(lo) + ciphers.get(lo + 1);
+        return res;
 
-        if (sign == '-' && ciphers.get(lo + 1) < 0) {
+        /*if (sign == '-' && ciphers.get(lo + 1) < 0) {
             double res = ciphers.get(lo) + ciphers.get(lo + 1);
             return res;
         }
@@ -148,7 +138,7 @@ public class Calculator {
         } else {
             double res = ciphers.get(lo) + ciphers.get(lo + 1);
             return res;
-        }
+        }*/
     }
 
     private int findIndxParenthClose(List<Character> signs, int indxParenthClose, int countParenth) {
