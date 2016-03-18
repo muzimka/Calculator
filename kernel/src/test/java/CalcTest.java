@@ -36,7 +36,7 @@ public class CalcTest {
         String exp19 = "5/0"; //=exception
         String exp20 = "3+2*(6+8*(7+2))/0"; //=exception
         String exp21 = "4   +      8   *    7"; //=60
-
+        String exp22 = "2+2*(3+3*(2-3*(2-3*(2+2*(1+1)))))"; //-268
         String exp23 = "5+2*(3+1-2*(3+2))"; // -7
         String exp24 = "5+2*(3+1-2*(3+2))+2"; // -5
         String exp25 ="2*(3+2*(2+2)+2)";//26
@@ -48,10 +48,10 @@ public class CalcTest {
         String exp31 ="(1-78+2)";// - 75
         String exp32 ="2-1-78+2";//-75
         String exp33 ="-2-1-78+2";//-79
+        String exp34 ="-2-1+(-78)+2";//-79
 
-        String exp22 = "2+2*(3+3*(2-3*(2-3*(2+2*(1+1)))))"; //-268
 
-        UserInputParser userInputParser = new UserInputParser(exp22);
+        UserInputParser userInputParser = new UserInputParser(exp34);
         Calculator calculator = new Calculator(userInputParser.getCiphersList(),userInputParser.getSignsList());
         System.out.println(calculator.calculateExpression());
     }

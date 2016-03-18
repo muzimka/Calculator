@@ -403,10 +403,10 @@ public class CalcTestJunit {
 
  /*test clc23*/
 
-     /*   x = clc23.calculateExpression();
+       x = clc23.calculateExpression();
         bd = new BigDecimal(x, MathContext.DECIMAL32);
         res = bd.setScale(1, RoundingMode.UP);
-        assertEquals("clc23", BigDecimal.valueOf(-268.0), res);*/
+        assertEquals("clc23", BigDecimal.valueOf(-268.0), res);
 
  /*test clc24*/
         x = clc24.calculateExpression();
