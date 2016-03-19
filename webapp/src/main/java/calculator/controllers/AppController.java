@@ -1,7 +1,8 @@
 package calculator.controllers;
 
 
-import calculator.model.UserInputParser;
+import calcmodel.Calculator;
+import calcmodel.UserInputParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,17 +33,17 @@ public class AppController {
         try {
             userInputParser = new UserInputParser(input);
         } catch (Exception e) {
-            error = "Ошибка пользовательского ввода";
+            error = "Ошибка пользовательского ввода: "+input;
             model.addAttribute("error",error);
             return "calculator";
         }
-        Calculator calculator = new Calculator(userInputParser.getCiphersList(),userInputParser.getSignsList());
+        Calculator calculator = new Calculator(userInputParser.getCiphersList(),userInputParser.getSignsList(),userInputParser.isHasFirstNegativeCipher());
 
         double x = 0;
         try {
             x = calculator.calculateExpression();
         } catch (Exception e) {
-            error = "Ошибка пользовательского ввода";
+            error = "Не могу вычислить это выражение: "+input+"."+e.getMessage();
             model.addAttribute("error",error);
             return "calculator";
         }

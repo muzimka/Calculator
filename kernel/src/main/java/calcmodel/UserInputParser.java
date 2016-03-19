@@ -147,12 +147,24 @@ public class UserInputParser {
                 tempSigns.set(i+1,"+");
                 tempSigns.remove(i);
                 tempSigns.remove(i-1);
-            }else if(i-1>=0 && tempSigns.get(i-1).equals("+")){//if 1+(-78)
+            }
+//if 1+(-78)
+            else if(i-1>=0 &&
+                    givenString.equals("(")
+                    &&tempSigns.get(i-1).equals("+")){
                 tempSigns.remove(i+2);
                 tempSigns.remove(i+1);
                 tempSigns.remove(i);
                 tempSigns.set(i-1,"-");
             }
+// if 64-((-35)   or 64-((+35) or 64 -((35)
+            if(givenString.equals("(")
+                    && nextString.equals("(")
+                    && tempSigns.get(i+3).equals(")")){
+                tempSigns.remove(i+3);
+                tempSigns.remove(i+1);
+            }
+
         }
 
 

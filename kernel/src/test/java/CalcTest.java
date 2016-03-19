@@ -60,9 +60,16 @@ public class CalcTest {
         String exp43 ="78-2-1";//75
 
 
+        String exp44 ="78+321-(64-((-35)+98))*4";// 395
+        String exp45 ="78+321-(64-(-35+98))*4";// 395
+        String exp46 ="78+321-(64-(98-35))*4";//
 
 
-        UserInputParser userInputParser = new UserInputParser(exp43);
+
+
+
+
+        UserInputParser userInputParser = new UserInputParser(exp46);
         Calculator calculator = new Calculator(userInputParser.getCiphersList(),userInputParser.getSignsList(),userInputParser.isHasFirstNegativeCipher());
         System.out.println(calculator.calculateExpression());
     }
