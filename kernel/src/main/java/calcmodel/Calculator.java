@@ -9,12 +9,20 @@ public class Calculator {
     LinkedList<Character> signs;
     private final int offsetConstant1 = 2;
     private final int offsetConstant2 = 3;
+    boolean hasNegativeFirstCipher;
 
 
     /*ввод пользователя разобранный парсером на два листа 1. цифры 2. знаки*/
+    public Calculator(LinkedList<Double> ciphers, LinkedList<Character> signs, boolean isNegativeFirstCipher) {
+        this.thisCiphers = ciphers;
+        this.signs = signs;
+        this.hasNegativeFirstCipher = isNegativeFirstCipher;
+    }
+
     public Calculator(LinkedList<Double> ciphers, LinkedList<Character> signs) {
         this.thisCiphers = ciphers;
         this.signs = signs;
+        this.hasNegativeFirstCipher = false;
     }
 
     /*основной метод вызывающий все вычисления*/
@@ -24,6 +32,13 @@ public class Calculator {
 
     /*осуществляет вычисления через сложение согласно приоритету операторов и скобок*/
     private double calculations(int lo, List<Double> ciphers, List<Character> signs) {
+        if(hasNegativeFirstCipher){
+            signs.remove(0);
+            double tmp = ciphers.get(0);
+            ciphers.set(0,-tmp);
+            hasNegativeFirstCipher=false;
+        }
+
         char multpl = '*';
         char divide = '/';
         double temp = 0;
@@ -32,7 +47,14 @@ public class Calculator {
             findParenthesisCloseIndxAndCalculate(ciphers, signs);
 
         }
-        /*замена положительных цифр на отрицательные, Если перед ними стоит минус */
+
+
+
+       /* if(ciphers.size()>= signs.size() && signs.get(0)=='-'){
+            signs.remove(0);
+            double tmp = ciphers.get(0);
+            ciphers.set(0,-tmp);
+        }*/
         for (Character sgn : signs) {
             if (sgn == '-') {
                 int ind = signs.indexOf(sgn);
@@ -169,9 +191,8 @@ public class Calculator {
             pInp = true;
         }
         int indxParenthClose = findIndxParenthClose(signs, indxOfFirstParenthClose, numOfParenthBlocks);
-        /*if(signs.get(indxParenthOpen+1)=='-'){
-            double temp = ciphers.get()
-        }*/
+      int dim = offsetConstant2+numOfParenthBlocks;
+
         res = calcParenthesisPriority(pInp, indxParenthOpen, indxParenthClose, signs, ciphers);
         ciphers.add(indxParenthOpen, res);
 

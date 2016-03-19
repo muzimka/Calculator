@@ -51,6 +51,17 @@ public class CalcTestJunit {
     UserInputParser mInputParser32;
     UserInputParser mInputParser33;
     UserInputParser mInputParser34;
+    UserInputParser mInputParser35;
+    UserInputParser mInputParser36;
+    UserInputParser mInputParser37;
+    UserInputParser mInputParser38;
+    UserInputParser mInputParser39;
+    UserInputParser mInputParser40;
+    UserInputParser mInputParser41;
+    UserInputParser mInputParser42;
+    UserInputParser mInputParser43;
+    UserInputParser mInputParser44;
+
     Calculator clc1;
     Calculator clc2;
     Calculator clc3;
@@ -85,6 +96,16 @@ public class CalcTestJunit {
     Calculator clc32;
     Calculator clc33;
     Calculator clc34;
+    Calculator clc35;
+    Calculator clc36;
+    Calculator clc37;
+    Calculator clc38;
+    Calculator clc39;
+    Calculator clc40;
+    Calculator clc41;
+    Calculator clc42;
+    Calculator clc43;
+    Calculator clc44;
     String exp = "2+3*(2+2)-3*(2+1)";//5
     String exp1 = "2/2";
     String exp2 = "5+2*(3-2)"; //=7
@@ -119,6 +140,19 @@ public class CalcTestJunit {
     String exp31 ="(1-78+2)";// - 75
     String exp32 ="2-1-78+2";//-75
     String exp33 ="-2-1-78+2";//-79
+    String exp34 ="-2-1+78+2";//77
+    String exp35 ="2-1-(-78)+2";//81
+    String exp36 ="-2-1-(-78)+2";//77
+    String exp37 ="-2-1+(-78)+2";//-79
+    String exp38 ="2-1+(-78)";//-77
+    String exp39 ="(-78)-2-1";//-81
+    String exp40 ="(78)-2-1";//75
+    String exp41 ="(+78)-2-1";//75
+    String exp42 ="-2-(+78)-1";//-81
+    String exp43 ="78-2-1";//75
+
+
+
 
     @Before
     public void init() {
@@ -259,6 +293,46 @@ public class CalcTestJunit {
 /*init clc34*/
         mInputParser34 = new UserInputParser(exp33);
         clc34 = new Calculator(mInputParser34.getCiphersList(), mInputParser34.getSignsList());
+
+/*init clc35*/
+        mInputParser35 = new UserInputParser(exp34);
+        clc35 = new Calculator(mInputParser35.getCiphersList(), mInputParser35.getSignsList(),mInputParser35.isHasFirstNegativeCipher());
+
+/*init clc36*/
+        mInputParser36 = new UserInputParser(exp35);
+        clc36 = new Calculator(mInputParser36.getCiphersList(), mInputParser36.getSignsList(),mInputParser36.isHasFirstNegativeCipher());
+
+/*init clc37*/
+        mInputParser37 = new UserInputParser(exp36);
+        clc37 = new Calculator(mInputParser37.getCiphersList(), mInputParser37.getSignsList(),mInputParser37.isHasFirstNegativeCipher());
+
+/*init clc38*/
+        mInputParser38 = new UserInputParser(exp37);
+        clc38 = new Calculator(mInputParser38.getCiphersList(), mInputParser38.getSignsList());
+
+/*init clc39*/
+        mInputParser39 = new UserInputParser(exp38);
+        clc39 = new Calculator(mInputParser39.getCiphersList(), mInputParser39.getSignsList(),mInputParser39.isHasFirstNegativeCipher());
+
+/*init clc40*/
+        mInputParser40 = new UserInputParser(exp39);
+        clc40 = new Calculator(mInputParser40.getCiphersList(), mInputParser40.getSignsList(),mInputParser40.isHasFirstNegativeCipher());
+
+/*init clc41*/
+        mInputParser41 = new UserInputParser(exp40);
+        clc41 = new Calculator(mInputParser41.getCiphersList(), mInputParser41.getSignsList());
+
+/*init clc42*/
+        mInputParser42 = new UserInputParser(exp41);
+        clc42 = new Calculator(mInputParser42.getCiphersList(), mInputParser42.getSignsList());
+
+/*init clc43*/
+        mInputParser43 = new UserInputParser(exp42);
+        clc43 = new Calculator(mInputParser43.getCiphersList(), mInputParser43.getSignsList(),mInputParser43.isHasFirstNegativeCipher());
+
+/*init clc44*/
+        mInputParser44 = new UserInputParser(exp43);
+        clc44 = new Calculator(mInputParser44.getCiphersList(), mInputParser44.getSignsList());
 
     }
 
@@ -473,6 +547,70 @@ public class CalcTestJunit {
         bd = new BigDecimal(x, MathContext.DECIMAL32);
         res = bd.setScale(1, RoundingMode.UP);
         assertEquals("clc34", BigDecimal.valueOf(-79.0), res);
+
+/*test clc35*/
+        x = clc35.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc35", BigDecimal.valueOf(77.0), res);
+
+/*test clc36*/
+        x = clc36.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc36", BigDecimal.valueOf(81.0), res);
+
+/*test clc37*/
+        x = clc37.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc37", BigDecimal.valueOf(77.0), res);
+
+/*test clc38*/
+        x = clc38.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc38", BigDecimal.valueOf(-79.0), res);
+
+/*test clc39*/
+        x = clc39.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc39", BigDecimal.valueOf(-77.0), res);
+
+/*test clc40*/
+        x = clc40.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc40", BigDecimal.valueOf(-81.0), res);
+
+/*test clc41*/
+        x = clc41.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc41", BigDecimal.valueOf(75.0), res);
+
+/*test clc42*/
+        x = clc42.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc42", BigDecimal.valueOf(75.0), res);
+
+/*test clc43*/
+
+        x = clc43.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc43", BigDecimal.valueOf(-81.0), res);
+
+
+/*test clc44*/
+        x = clc44.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc44", BigDecimal.valueOf(75.0), res);
+
+
 
 
     }

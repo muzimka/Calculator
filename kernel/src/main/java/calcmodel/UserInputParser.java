@@ -11,6 +11,10 @@ public class UserInputParser {
     private LinkedList<Double> ciphers;
     private LinkedList<Character> signs;
 
+
+
+    private boolean hasFirstNegativeCipher;
+
     public UserInputParser() {
         ciphers = new LinkedList<Double>();
         signs = new LinkedList<Character>();
@@ -81,17 +85,85 @@ public class UserInputParser {
     private void parseInput() {
         input.replaceAll("\\s+", "");
         System.out.println("input = " + input);
+        if(input.toCharArray()[0]=='-'){
+            setHasFirstNegativeCipher(true);
+        }
+
         LinkedList<String>  tempCiphers= getTokens("[0-9.]+");
         LinkedList<String>  tempSigns= getTokens("[\\*\\+\\-/]+|\\(|\\)");
         convertStringsList(tempCiphers, tempSigns);
     }
 
     private void convertStringsList(LinkedList<String> tempCiphers, LinkedList<String> tempSigns) {
+
+/*обрабатывает последствия нахождения в выражении цифры в скобках типа -(-3)*/
+        int signsCount =0;
         for (String tempSign : tempSigns) {
+            if(tempSign.matches("[*\\-+/]+")){
+                signsCount++;
+            }
+        }
+        for (int i = 0; i < tempSigns.size() && i+1<tempSigns.size() && i+2<tempSigns.size(); i++) {
+           /*решает можно ли применить последствия(если кол-во знаков меньше чем кол-во цифр то цифр типа (-3) в выражении нет*/
+            if(signsCount<tempCiphers.size()){
+                break;
+            }
+
+            String givenString = tempSigns.get(i);
+            String nextString = tempSigns.get(i+1);
+            String afterNextString = tempSigns.get(i+2);
+// if (+78)-1
+            if(i-1<0 && givenString.equals("(")
+                    && nextString.equals("+")
+                    && afterNextString.equals(")")){
+                tempSigns.remove(i+2);
+                tempSigns.remove(i+1);
+                tempSigns.remove(i);
+            }
+/*if 1-(+78)*/
+            if(i-1>0 && givenString.equals("(")
+                    && nextString.equals("+")
+                    && afterNextString.equals(")")){
+                tempSigns.remove(i+1);
+            }
+
+// if (-78)+1
+           if(i-1<0 && givenString.equals("(")
+                   && nextString.equals("-")
+                   && afterNextString.equals(")")){
+               if(tempSigns.get(i+1).equals("-")){
+                   setHasFirstNegativeCipher(true);
+               }
+               tempSigns.remove(i+2);
+               tempSigns.remove(i);
+           }
+//  если 1-(-78)
+            if(i-1>=0
+                    &&givenString.equals("(")
+                    && nextString.equals("-")
+                    && afterNextString.equals(")")
+                    && tempSigns.get(i-1).equals("-")){
+                tempSigns.remove(i+2);
+                tempSigns.set(i+1,"+");
+                tempSigns.remove(i);
+                tempSigns.remove(i-1);
+            }else if(i-1>=0 && tempSigns.get(i-1).equals("+")){//if 1+(-78)
+                tempSigns.remove(i+2);
+                tempSigns.remove(i+1);
+                tempSigns.remove(i);
+                tempSigns.set(i-1,"-");
+            }
+        }
+
+
+/*проверяет ошибку ввода типа 2+*3, если 2***3 то считает как 2*3  и т.п.*/
+        for (String tempSign : tempSigns) {
+
             char firstSign = tempSign.toCharArray()[0];
             char[] chars = tempSign.toCharArray();
             if(chars.length>1){
                 for (int i = 1; i <= chars.length-1; i++) {
+
                     if(firstSign!=chars[i]){
                         throw new IllegalArgumentException();
                     }
@@ -99,6 +171,7 @@ public class UserInputParser {
             }
             signs.add(firstSign);
         }
+
         for (String tempCipher : tempCiphers) {
             double temp = Double.valueOf(tempCipher);
             ciphers.add(temp);
@@ -111,5 +184,13 @@ public class UserInputParser {
 
     public LinkedList<Character> getSignsList() {
         return signs;
+    }
+
+    private void setHasFirstNegativeCipher(boolean hasFirstNegativeCipher) {
+        this.hasFirstNegativeCipher = hasFirstNegativeCipher;
+    }
+
+    public boolean isHasFirstNegativeCipher() {
+        return hasFirstNegativeCipher;
     }
 }

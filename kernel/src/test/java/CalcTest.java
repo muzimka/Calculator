@@ -48,11 +48,22 @@ public class CalcTest {
         String exp31 ="(1-78+2)";// - 75
         String exp32 ="2-1-78+2";//-75
         String exp33 ="-2-1-78+2";//-79
-        String exp34 ="-2-1+(-78)+2";//-79
+        String exp34 ="-2-1+78+2";//77
+        String exp35 ="2-1-(-78)+2";//81
+        String exp36 ="-2-1-(-78)+2";//77
+        String exp37 ="-2-1+(-78)+2";//-79
+        String exp38 ="2-1+(-78)";//-77
+        String exp39 ="(-78)-2-1";//-81
+        String exp40 ="(78)-2-1";//75
+        String exp41 ="(+78)-2-1";//75
+        String exp42 ="-2-(+78)-1";//-81
+        String exp43 ="78-2-1";//75
 
 
-        UserInputParser userInputParser = new UserInputParser(exp34);
-        Calculator calculator = new Calculator(userInputParser.getCiphersList(),userInputParser.getSignsList());
+
+
+        UserInputParser userInputParser = new UserInputParser(exp43);
+        Calculator calculator = new Calculator(userInputParser.getCiphersList(),userInputParser.getSignsList(),userInputParser.isHasFirstNegativeCipher());
         System.out.println(calculator.calculateExpression());
     }
 }
