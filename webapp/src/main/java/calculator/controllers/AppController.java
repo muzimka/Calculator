@@ -43,7 +43,9 @@ public class AppController {
         try {
             x = calculator.calculateExpression();
         } catch (Exception e) {
-            error = "Не могу вычислить это выражение: "+input+"."+e.getMessage();
+            error = "Не могу вычислить это выражение: "+input+"."+e.getMessage()+
+                    "\nЕсли выражение в скобках начинается с отрицательной цифры, заключите ее в скобки.\n" +
+                    "Например: 2+((-3)+2)";
             model.addAttribute("error",error);
             return "calculator";
         }

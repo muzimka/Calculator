@@ -3,26 +3,47 @@ package calcmodel;
 import java.util.*;
 
 
-// TODO: 15.03.2016 сделать скобки в скобках, на данный момент он находит первую открывающую скобку блока, но обращается к закрывающей внетреннего блока
+// TODO: 15.03.2016  проверить все конструкторы, сделать рефакторинг внутренний класс парсинга ввода
 public class Calculator {
     LinkedList<Double> thisCiphers;
     LinkedList<Character> signs;
     private final int offsetConstant1 = 2;
     private final int offsetConstant2 = 3;
-    boolean hasNegativeFirstCipher;
+    private boolean hasNegativeFirstCipher;
+    private LinkedList<Integer> minusAfterParenthList;
 
 
     /*ввод пользователя разобранный парсером на два листа 1. цифры 2. знаки*/
-    public Calculator(LinkedList<Double> ciphers, LinkedList<Character> signs, boolean isNegativeFirstCipher) {
+    public Calculator(LinkedList<Double> ciphers, LinkedList<Character> signs,
+                      boolean isNegativeFirstCipher,
+                      LinkedList<Integer> minusAfterParenthList ) {
         this.thisCiphers = ciphers;
         this.signs = signs;
         this.hasNegativeFirstCipher = isNegativeFirstCipher;
+        this.minusAfterParenthList = minusAfterParenthList;
+    }
+
+public Calculator(LinkedList<Double> ciphers, LinkedList<Character> signs,
+                      boolean hasNegativeFirstCipher) {
+        this.thisCiphers = ciphers;
+        this.signs = signs;
+        this.hasNegativeFirstCipher = hasNegativeFirstCipher;
+        this.minusAfterParenthList = null;
+    }
+
+public Calculator(LinkedList<Double> ciphers, LinkedList<Character> signs,
+                      LinkedList<Integer> minusAfterParenthList ) {
+        this.thisCiphers = ciphers;
+        this.signs = signs;
+        this.hasNegativeFirstCipher = false;
+        this.minusAfterParenthList = minusAfterParenthList;
     }
 
     public Calculator(LinkedList<Double> ciphers, LinkedList<Character> signs) {
         this.thisCiphers = ciphers;
         this.signs = signs;
         this.hasNegativeFirstCipher = false;
+        this.minusAfterParenthList = null;
     }
 
     /*основной метод вызывающий все вычисления*/
@@ -32,11 +53,21 @@ public class Calculator {
 
     /*осуществляет вычисления через сложение согласно приоритету операторов и скобок*/
     private double calculations(int lo, List<Double> ciphers, List<Character> signs) {
+
+       /*если выражение начинается со знака минус*/
         if(hasNegativeFirstCipher){
             signs.remove(0);
             double tmp = ciphers.get(0);
             ciphers.set(0,-tmp);
             hasNegativeFirstCipher=false;
+        }
+        /*если блок скобок начинается с(-35) то делаем эту цифру отрицательной(первая часть сделана парсером)*/
+        if(minusAfterParenthList!=null){
+            for (Integer indxOfCipher : minusAfterParenthList) {
+                double temp = ciphers.get(indxOfCipher);
+                ciphers.set(indxOfCipher,-temp);
+            }
+            minusAfterParenthList=null;
         }
 
         char multpl = '*';
@@ -48,13 +79,6 @@ public class Calculator {
 
         }
 
-
-
-       /* if(ciphers.size()>= signs.size() && signs.get(0)=='-'){
-            signs.remove(0);
-            double tmp = ciphers.get(0);
-            ciphers.set(0,-tmp);
-        }*/
         for (Character sgn : signs) {
             if (sgn == '-') {
                 int ind = signs.indexOf(sgn);
@@ -139,7 +163,7 @@ public class Calculator {
 
         if (operation == '/') {
             if (cipher2 == 0) {
-                throw new ArithmeticException("Trying divide by Zero");
+                throw new ArithmeticException("Деление на ноль невозможно");
             }
             res = cipher1 / cipher2;
         } else {

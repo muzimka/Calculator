@@ -10,6 +10,7 @@ public class UserInputParser {
     private String input;
     private LinkedList<Double> ciphers;
     private LinkedList<Character> signs;
+    private LinkedList<Integer> minusAfterParenth = new LinkedList<Integer>();
 
 
 
@@ -112,6 +113,21 @@ public class UserInputParser {
             String givenString = tempSigns.get(i);
             String nextString = tempSigns.get(i+1);
             String afterNextString = tempSigns.get(i+2);
+
+
+// if 2+(-35+2) то создаем массив с индексами цифры -35, чтобы потом сделать ее отрицательной при расчете
+            if (i + 3 < tempSigns.size()
+                    && givenString.equals("(")
+                    && nextString.equals("(")
+                    && afterNextString.equals("-")
+                    && tempSigns.get(i + 3).equals(")")) {
+                int indx = countMinusAfterParenthesisOffset(i + 2, tempSigns);
+                minusAfterParenth.add(indx);
+                tempSigns.remove(i + 3);
+                tempSigns.remove(i + 2);
+                tempSigns.remove(i + 1);
+            }
+
 // if (+78)-1
             if(i-1<0 && givenString.equals("(")
                     && nextString.equals("+")
@@ -157,14 +173,6 @@ public class UserInputParser {
                 tempSigns.remove(i);
                 tempSigns.set(i-1,"-");
             }
-// if 64-((-35)   or 64-((+35) or 64 -((35)
-            if(givenString.equals("(")
-                    && nextString.equals("(")
-                    && tempSigns.get(i+3).equals(")")){
-                tempSigns.remove(i+3);
-                tempSigns.remove(i+1);
-            }
-
         }
 
 
@@ -190,6 +198,16 @@ public class UserInputParser {
         }
     }
 
+    private int countMinusAfterParenthesisOffset(int signIndex, LinkedList<String> signs) {
+        int count = 0;
+        for (int i = 0; i <= signIndex && i < signs.size(); i++) {
+            if (signs.get(i).equals("(") || signs.get(i).equals(")")) {
+                count++;
+            }
+        }
+        return signIndex - count;
+    }
+
     public LinkedList<Double> getCiphersList() {
         return ciphers;
     }
@@ -204,5 +222,9 @@ public class UserInputParser {
 
     public boolean isHasFirstNegativeCipher() {
         return hasFirstNegativeCipher;
+    }
+
+    public LinkedList<Integer> getMinusAfterParenth() {
+        return minusAfterParenth;
     }
 }
