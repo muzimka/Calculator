@@ -33,17 +33,25 @@ public class AppController {
         try {
             userInputParser = new UserInputParser(input);
         } catch (Exception e) {
-            error = "Ошибка пользовательского ввода: "+input;
+            error = "Ошибка пользовательского ввода: "+input + ".\n"+e.getMessage();
             model.addAttribute("error",error);
             return "calculator";
         }
-        Calculator calculator = new Calculator(userInputParser.getCiphersList(),userInputParser.getSignsList(),userInputParser.isHasFirstNegativeCipher());
+        Calculator calculator = new Calculator(userInputParser.getCiphersList(),
+                userInputParser.getSignsList(),
+                userInputParser.isHasFirstNegativeCipher(),
+                userInputParser.getMinusAfterParenth());
 
         double x = 0;
         try {
             x = calculator.calculateExpression();
-        } catch (Exception e) {
-            error = "Не могу вычислить это выражение: "+input+"."+e.getMessage()+
+        } catch (ArithmeticException e){
+            error = "Арифметическая ошибка: "+input+"."+e.getMessage();
+            model.addAttribute("error",error);
+            return "calculator";
+        }
+        catch (Exception e) {
+            error = "Не могу вычислить это выражение: "+input+". "+e.getMessage()+
                     "\nЕсли выражение в скобках начинается с отрицательной цифры, заключите ее в скобки.\n" +
                     "Например: 2+((-3)+2)";
             model.addAttribute("error",error);

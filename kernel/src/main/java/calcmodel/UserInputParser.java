@@ -34,7 +34,7 @@ public class UserInputParser {
         signs = new LinkedList<Character>();
         this.input= userInput;
         if(!isValid()){
-            throw new IllegalArgumentException();
+            throw new InputMismatchException("Выражение не должно содержать символом кроме '*','/','+','-','(',')'");
         }
         parseInput();
     }
@@ -85,11 +85,25 @@ public class UserInputParser {
     /*создает два листа 1. с цифрами 2. с операторами*/
     private void parseInput() {
         input.replaceAll("\\s+", "");
+        List<String> pOpen = getTokens("\\(");
+        List<String> pClose = getTokens("\\)");
+        if(pClose.size()!=pOpen.size()){
+            throw new InputMismatchException("Число закрывающих скобок не совпадает с количеством открывающих");
+        }
         System.out.println("input = " + input);
-        if(input.toCharArray()[0]=='-'){
+       /*проверяет начинается ли выражение с отрицательной цифры*/
+        if(input.toCharArray()[0]=='-' && new String(Character.toString(input.toCharArray()[1])).matches("\\d")){
+            char[] givenArr = input.toCharArray().clone();
+            char[] tempArr = new char[givenArr.length-1];
+           /*удаляем отрицательный знак сначала и перевод булен в тру*/
+            for (int i = 0; i < tempArr.length; i++) {
+                tempArr[i]=givenArr[i+1];
+            }
+            input = new String(tempArr);
             setHasFirstNegativeCipher(true);
         }
 
+        char[] chars = input.toCharArray();
         LinkedList<String>  tempCiphers= getTokens("[0-9.]+");
         LinkedList<String>  tempSigns= getTokens("[\\*\\+\\-/]+|\\(|\\)");
         convertStringsList(tempCiphers, tempSigns);
@@ -105,7 +119,7 @@ public class UserInputParser {
             }
         }
         for (int i = 0; i < tempSigns.size() && i+1<tempSigns.size() && i+2<tempSigns.size(); i++) {
-           /*решает можно ли применить последствия(если кол-во знаков меньше чем кол-во цифр то цифр типа (-3) в выражении нет*/
+           /*решает можно ли применить последствия(если кол-во знаков(всех кроме ( и ) меньше чем кол-во цифр то цифр типа (-3) в выражении нет*/
             if(signsCount<tempCiphers.size()){
                 break;
             }
@@ -114,7 +128,7 @@ public class UserInputParser {
             String nextString = tempSigns.get(i+1);
             String afterNextString = tempSigns.get(i+2);
 
-
+//// TODO: 20.03.2016 проверить уменьшение signsCount
 // if 2+(-35+2) то создаем массив с индексами цифры -35, чтобы потом сделать ее отрицательной при расчете
             if (i + 3 < tempSigns.size()
                     && givenString.equals("(")
@@ -163,6 +177,7 @@ public class UserInputParser {
                 tempSigns.set(i+1,"+");
                 tempSigns.remove(i);
                 tempSigns.remove(i-1);
+                signsCount--;
             }
 //if 1+(-78)
             else if(i-1>=0 &&
@@ -172,6 +187,7 @@ public class UserInputParser {
                 tempSigns.remove(i+1);
                 tempSigns.remove(i);
                 tempSigns.set(i-1,"-");
+                signsCount--;
             }
         }
 
@@ -185,7 +201,7 @@ public class UserInputParser {
                 for (int i = 1; i <= chars.length-1; i++) {
 
                     if(firstSign!=chars[i]){
-                        throw new IllegalArgumentException();
+                        throw new InputMismatchException("Выражение содержит нелогичные чередования операторов, например 2+-3 или 2*+3 ");
                     }
                 }
             }

@@ -56,8 +56,7 @@ public Calculator(LinkedList<Double> ciphers, LinkedList<Character> signs,
 
        /*если выражение начинается со знака минус*/
         if(hasNegativeFirstCipher){
-            signs.remove(0);
-            double tmp = ciphers.get(0);
+           double tmp = ciphers.get(0);
             ciphers.set(0,-tmp);
             hasNegativeFirstCipher=false;
         }
