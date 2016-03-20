@@ -139,6 +139,12 @@ public class UserInputParser {
             String nextString = tempSigns.get(i+1);
             String afterNextString = tempSigns.get(i+2);
 
+//if 2+(-35+2) то просим пользователя -35 заключить в скобки
+            if(givenString.equals("(")
+                    && (nextString.equals("-") || nextString.equals("+"))
+                    && (afterNextString.equals("+")|| afterNextString.equals("-"))){
+                throw new InputMismatchException("Отрицательное число после скобок не в скобках. Например 2+((-35)+2)");
+            }
 
 // if 2+((-35)+2) то создаем массив с индексами цифр типа -35, чтобы потом сделать ее отрицательной при расчете
             if (i + 3 < tempSigns.size()

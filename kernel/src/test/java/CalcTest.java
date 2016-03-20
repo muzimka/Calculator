@@ -62,15 +62,18 @@ public class CalcTest {
         String exp45 ="78+321-(64-(98-35))*4";//395
         String exp46 ="78+321-(64-((-35)+98))";// 398
         String exp47 ="-2+(-2)+(2-3)";// -5
-
-
         String exp48 ="((-5)+(-6))";// -11
         String exp49 ="2-((-5)-6)";// 13
         String exp50 ="2+((-5)-6)";//-9
+        String exp51 ="2+2*((-5)-(-6))";//4
+        String exp52 ="2+((-5)+(-6))";//-9
+        String exp53 ="2+((-5)+(-6))+2";//-7
+        String exp54 ="2+2*(-5-6)+3";//  exception
 
 
 
-        UserInputParser userInputParser = new UserInputParser(exp50);
+
+        UserInputParser userInputParser = new UserInputParser(exp54);
         Calculator calculator = new Calculator(userInputParser.getCiphersList(),
                 userInputParser.getSignsList(),
                 userInputParser.isHasFirstNegativeCipher(),

@@ -68,6 +68,10 @@ public class CalcTestJunit {
     UserInputParser mInputParser49;
     UserInputParser mInputParser50;
     UserInputParser mInputParser51;
+    UserInputParser mInputParser52;
+    UserInputParser mInputParser53;
+    UserInputParser mInputParser54;
+    UserInputParser mInputParser55;
 
     Calculator clc1;
     Calculator clc2;
@@ -120,6 +124,10 @@ public class CalcTestJunit {
     Calculator clc49;
     Calculator clc50;
     Calculator clc51;
+    Calculator clc52;
+    Calculator clc53;
+    Calculator clc54;
+    Calculator clc55;
     String exp = "2+3*(2+2)-3*(2+1)";//5
     String exp1 = "2/2";
     String exp2 = "5+2*(3-2)"; //=7
@@ -171,7 +179,10 @@ public class CalcTestJunit {
     String exp48 ="((-5)+(-6))";// -11
     String exp49 ="2-((-5)-6)";// 13
     String exp50 ="2+((-5)-6)";//-9
-
+    String exp51 ="2+2*((-5)-(-6))";//4
+    String exp52 ="2+((-5)+(-6))";//-9
+    String exp53 ="2+((-5)+(-6))+2";//-7
+    String exp54 ="2+2*(-5-6)+3";//  exception
 
 
 
@@ -393,6 +404,30 @@ public class CalcTestJunit {
                 mInputParser51.getSignsList(),
                 mInputParser51.isHasFirstNegativeCipher(),
                 mInputParser51.getMinusAfterParenth());
+
+/*init clc5 52*/
+        mInputParser52 = new UserInputParser(exp51);
+        clc52 = new Calculator(mInputParser52.getCiphersList(),
+                mInputParser52.getSignsList(),
+                mInputParser52.isHasFirstNegativeCipher(),
+                mInputParser52.getMinusAfterParenth());
+
+/*init clc5 53*/
+        mInputParser53 = new UserInputParser(exp52);
+        clc53 = new Calculator(mInputParser53.getCiphersList(),
+                mInputParser53.getSignsList(),
+                mInputParser53.isHasFirstNegativeCipher(),
+                mInputParser53.getMinusAfterParenth());
+
+/*init clc5 54*/
+        mInputParser54 = new UserInputParser(exp53);
+        clc54 = new Calculator(mInputParser54.getCiphersList(),
+                mInputParser54.getSignsList(),
+                mInputParser54.isHasFirstNegativeCipher(),
+                mInputParser54.getMinusAfterParenth());
+
+/*init clc5 55 must be initialized below*/
+
 
     }
 
@@ -711,6 +746,30 @@ public class CalcTestJunit {
         bd = new BigDecimal(x, MathContext.DECIMAL32);
         res = bd.setScale(1, RoundingMode.UP);
         assertEquals("clc51", BigDecimal.valueOf(-9.0), res);
+
+/*test clc52*/
+        x = clc52.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc52", BigDecimal.valueOf(4.0), res);
+
+/*test clc53*/
+        x = clc53.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc53", BigDecimal.valueOf(-9.0), res);
+
+/*test clc54*/
+        x = clc54.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc54", BigDecimal.valueOf(-7.0), res);
+
+/*test clc55*/
+        try {
+            new UserInputParser(exp54);
+            fail("clc55 2+*(-5-6)+3 didn't throw exception");
+        } catch (Exception e) { }
 
 
 
