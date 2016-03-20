@@ -53,7 +53,7 @@ public class CalcTest {
         String exp36 ="-2-1-(-78)+2";//77
         String exp37 ="-2-1+(-78)+2";//-79
         String exp38 ="2-1+(-78)";//-77
-            String exp39 ="(-78)-2-1";//-81
+        String exp39 ="(-78)-2-1";//-81
         String exp40 ="(78)-2-1";//75
         String exp41 ="(+78)-2-1";//75
             String exp42 ="-2-(+78)-1";//-81
@@ -68,7 +68,7 @@ public class CalcTest {
 
 
 
-        UserInputParser userInputParser = new UserInputParser(exp47);
+        UserInputParser userInputParser = new UserInputParser(exp42);
         Calculator calculator = new Calculator(userInputParser.getCiphersList(),
                 userInputParser.getSignsList(),
                 userInputParser.isHasFirstNegativeCipher(),

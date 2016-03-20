@@ -112,6 +112,24 @@ public class UserInputParser {
     private void convertStringsList(LinkedList<String> tempCiphers, LinkedList<String> tempSigns) {
 
 /*обрабатывает последствия нахождения в выражении цифры в скобках типа -(-3)*/
+        /*проверяет ошибку ввода типа 2+*3, если 2***3 то считает как 2*3  и т.п.*/
+        for (String tempSign : tempSigns) {
+
+            char firstSign = tempSign.toCharArray()[0];
+            char[] chars = tempSign.toCharArray();
+            if(chars.length>1){
+                for (int i = 1; i <= chars.length-1; i++) {
+
+                    if(firstSign!=chars[i]){
+                        throw new InputMismatchException("Выражение содержит нелогичные чередования операторов, например 2+-3 или 2*+3 ");
+                    }
+                }
+            }
+            signs.add(firstSign);
+        }
+
+
+
         int signsCount =0;
         for (String tempSign : tempSigns) {
             if(tempSign.matches("[*\\-+/]+")){
@@ -128,8 +146,8 @@ public class UserInputParser {
             String nextString = tempSigns.get(i+1);
             String afterNextString = tempSigns.get(i+2);
 
-//// TODO: 20.03.2016 проверить уменьшение signsCount
-// if 2+(-35+2) то создаем массив с индексами цифры -35, чтобы потом сделать ее отрицательной при расчете
+
+// if 2+((-35)+2) то создаем массив с индексами цифр типа -35, чтобы потом сделать ее отрицательной при расчете
             if (i + 3 < tempSigns.size()
                     && givenString.equals("(")
                     && nextString.equals("(")
@@ -140,6 +158,7 @@ public class UserInputParser {
                 tempSigns.remove(i + 3);
                 tempSigns.remove(i + 2);
                 tempSigns.remove(i + 1);
+                signsCount--;
             }
 
 // if (+78)-1
@@ -149,12 +168,16 @@ public class UserInputParser {
                 tempSigns.remove(i+2);
                 tempSigns.remove(i+1);
                 tempSigns.remove(i);
+                signsCount--;
             }
 /*if 1-(+78)*/
-            if(i-1>0 && givenString.equals("(")
+            if(i-1>=0 && givenString.equals("(")
                     && nextString.equals("+")
                     && afterNextString.equals(")")){
-                tempSigns.remove(i+1);
+                    tempSigns.remove(i+2);
+                    tempSigns.remove(i+1);
+                    tempSigns.remove(i);
+                    signsCount--;
             }
 
 // if (-78)+1
@@ -165,7 +188,10 @@ public class UserInputParser {
                    setHasFirstNegativeCipher(true);
                }
                tempSigns.remove(i+2);
+               tempSigns.remove(i+1);
                tempSigns.remove(i);
+               signsCount--;
+               setHasFirstNegativeCipher(true);
            }
 //  если 1-(-78)
             if(i-1>=0
@@ -192,21 +218,7 @@ public class UserInputParser {
         }
 
 
-/*проверяет ошибку ввода типа 2+*3, если 2***3 то считает как 2*3  и т.п.*/
-        for (String tempSign : tempSigns) {
 
-            char firstSign = tempSign.toCharArray()[0];
-            char[] chars = tempSign.toCharArray();
-            if(chars.length>1){
-                for (int i = 1; i <= chars.length-1; i++) {
-
-                    if(firstSign!=chars[i]){
-                        throw new InputMismatchException("Выражение содержит нелогичные чередования операторов, например 2+-3 или 2*+3 ");
-                    }
-                }
-            }
-            signs.add(firstSign);
-        }
 
         for (String tempCipher : tempCiphers) {
             double temp = Double.valueOf(tempCipher);
