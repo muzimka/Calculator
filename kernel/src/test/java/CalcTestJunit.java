@@ -235,9 +235,8 @@ public class CalcTestJunit {
 /*init clc17 should be initialized in test method below*/
 
 
-/*init clc18*/
-        mInputParser18 = new UserInputParser(exp17);
-        clc18 = new Calculator(mInputParser18.getCiphersList(), mInputParser18.getSignsList());
+/*init clc18 should be initialized in test method below*/
+
 
         /*init clc19 should be initialized in test method below*/
 
@@ -476,10 +475,10 @@ public class CalcTestJunit {
 
 
 /*test clc18*/
-        x = clc18.calculateExpression();
-        bd = new BigDecimal(x, MathContext.DECIMAL32);
-        res = bd.setScale(1, RoundingMode.UP);
-        assertEquals("clc18", BigDecimal.valueOf(66.0), res);
+        try {
+            new UserInputParser(exp17);
+            fail("clc18 6**11 didn't throw exception");
+        } catch (Exception e) { }
 
 /*test clc19*/
         try {

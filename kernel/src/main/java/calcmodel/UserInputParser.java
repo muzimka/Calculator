@@ -114,18 +114,11 @@ public class UserInputParser {
 /*обрабатывает последствия нахождения в выражении цифры в скобках типа -(-3)*/
         /*проверяет ошибку ввода типа 2+*3, если 2***3 то считает как 2*3  и т.п.*/
         for (String tempSign : tempSigns) {
-
             char firstSign = tempSign.toCharArray()[0];
             char[] chars = tempSign.toCharArray();
             if(chars.length>1){
-                for (int i = 1; i <= chars.length-1; i++) {
-
-                    if(firstSign!=chars[i]){
-                        throw new InputMismatchException("Выражение содержит нелогичные чередования операторов, например 2+-3 или 2*+3 ");
+                throw new InputMismatchException("Выражение содержит несколько операторов подряд, например 2+-3 или 2*+3 ");
                     }
-                }
-            }
-            signs.add(firstSign);
         }
 
 
@@ -216,10 +209,15 @@ public class UserInputParser {
                 signsCount--;
             }
         }
+        for (String tempSign : tempSigns) {
+
+            char firstSign = tempSign.toCharArray()[0];
+            char[] chars = tempSign.toCharArray();
+            signs.add(firstSign);
+        }
 
 
-
-
+/*добавляем цифры в лист цифр*/
         for (String tempCipher : tempCiphers) {
             double temp = Double.valueOf(tempCipher);
             ciphers.add(temp);
