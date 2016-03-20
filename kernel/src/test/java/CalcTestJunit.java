@@ -65,6 +65,9 @@ public class CalcTestJunit {
     UserInputParser mInputParser46;
     UserInputParser mInputParser47;
     UserInputParser mInputParser48;
+    UserInputParser mInputParser49;
+    UserInputParser mInputParser50;
+    UserInputParser mInputParser51;
 
     Calculator clc1;
     Calculator clc2;
@@ -114,6 +117,9 @@ public class CalcTestJunit {
     Calculator clc46;
     Calculator clc47;
     Calculator clc48;
+    Calculator clc49;
+    Calculator clc50;
+    Calculator clc51;
     String exp = "2+3*(2+2)-3*(2+1)";//5
     String exp1 = "2/2";
     String exp2 = "5+2*(3-2)"; //=7
@@ -162,6 +168,9 @@ public class CalcTestJunit {
     String exp45 ="78+321-(64-(98-35))*4";//395
     String exp46 ="78+321-(64-((-35)+98))";// 398
     String exp47 ="-2+(-2)+(2-3)";// -5
+    String exp48 ="((-5)+(-6))";// -11
+    String exp49 ="2-((-5)-6)";// 13
+    String exp50 ="2+((-5)-6)";//-9
 
 
 
@@ -363,6 +372,27 @@ public class CalcTestJunit {
                 mInputParser48.getSignsList(),
                 mInputParser48.isHasFirstNegativeCipher(),
                 mInputParser48.getMinusAfterParenth());
+
+/*init clc49*/
+        mInputParser49 = new UserInputParser(exp48);
+        clc49 = new Calculator(mInputParser49.getCiphersList(),
+                mInputParser49.getSignsList(),
+                mInputParser49.isHasFirstNegativeCipher(),
+                mInputParser49.getMinusAfterParenth());
+
+/*init clc50*/
+        mInputParser50 = new UserInputParser(exp49);
+        clc50 = new Calculator(mInputParser50.getCiphersList(),
+                mInputParser50.getSignsList(),
+                mInputParser50.isHasFirstNegativeCipher(),
+                mInputParser50.getMinusAfterParenth());
+
+/*init clc5 51*/
+        mInputParser51 = new UserInputParser(exp50);
+        clc51 = new Calculator(mInputParser51.getCiphersList(),
+                mInputParser51.getSignsList(),
+                mInputParser51.isHasFirstNegativeCipher(),
+                mInputParser51.getMinusAfterParenth());
 
     }
 
@@ -663,6 +693,24 @@ public class CalcTestJunit {
         bd = new BigDecimal(x, MathContext.DECIMAL32);
         res = bd.setScale(1, RoundingMode.UP);
         assertEquals("clc48", BigDecimal.valueOf(-5.0), res);
+
+/*test clc49*/
+        x = clc49.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc49", BigDecimal.valueOf(-11.0), res);
+
+/*test clc50*/
+        x = clc50.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc50", BigDecimal.valueOf(13.0), res);
+
+/*test clc51*/
+        x = clc51.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc51", BigDecimal.valueOf(-9.0), res);
 
 
 

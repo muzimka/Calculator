@@ -152,6 +152,7 @@ public class UserInputParser {
                 tempSigns.remove(i + 2);
                 tempSigns.remove(i + 1);
                 signsCount--;
+                continue;
             }
 
 // if (+78)-1
@@ -162,6 +163,7 @@ public class UserInputParser {
                 tempSigns.remove(i+1);
                 tempSigns.remove(i);
                 signsCount--;
+                continue;
             }
 /*if 1-(+78)*/
             if(i-1>=0 && givenString.equals("(")
@@ -171,6 +173,7 @@ public class UserInputParser {
                     tempSigns.remove(i+1);
                     tempSigns.remove(i);
                     signsCount--;
+                continue;
             }
 
 // if (-78)+1
@@ -185,6 +188,7 @@ public class UserInputParser {
                tempSigns.remove(i);
                signsCount--;
                setHasFirstNegativeCipher(true);
+               continue;
            }
 //  если 1-(-78)
             if(i-1>=0
@@ -197,6 +201,7 @@ public class UserInputParser {
                 tempSigns.remove(i);
                 tempSigns.remove(i-1);
                 signsCount--;
+                continue;
             }
 //if 1+(-78)
             else if(i-1>=0 &&
@@ -207,6 +212,7 @@ public class UserInputParser {
                 tempSigns.remove(i);
                 tempSigns.set(i-1,"-");
                 signsCount--;
+                continue;
             }
         }
         for (String tempSign : tempSigns) {
