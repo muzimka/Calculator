@@ -77,8 +77,6 @@ public Calculator(LinkedList<Double> ciphers, LinkedList<Character> signs,
             findParenthesisCloseIndxAndCalculate(ciphers, signs);
         }
 
-
-
         while (signs.contains(multpl)) {
             calcOperationPriority(multpl, signs, ciphers);
         }
@@ -90,11 +88,7 @@ public Calculator(LinkedList<Double> ciphers, LinkedList<Character> signs,
         for (Character sgn : signs) {
             int ind = signs.indexOf(sgn);
            /*если следующая после отрицания число тоже отрицательное то ничего не делаем*/
-            if (ind + 2 < ciphers.size() - 1) {
-                if (sgn == '-' && ciphers.get(ind + 2) < 0) {
-                    continue;
-                }
-            }
+            
             if (sgn == '-') {
 
                 double tmp = ciphers.get(ind + 1);
