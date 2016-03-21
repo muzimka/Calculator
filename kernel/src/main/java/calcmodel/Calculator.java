@@ -86,9 +86,8 @@ public Calculator(LinkedList<Double> ciphers, LinkedList<Character> signs,
 
         /*заменяет знаки минус на плюс если нужно*/
         for (Character sgn : signs) {
-            int ind = signs.indexOf(sgn);
-           /*если следующая после отрицания число тоже отрицательное то ничего не делаем*/
-            
+            int ind = signs.indexOf(sgn);        
+
             if (sgn == '-') {
 
                 double tmp = ciphers.get(ind + 1);
