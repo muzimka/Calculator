@@ -75,12 +75,19 @@ public Calculator(LinkedList<Double> ciphers, LinkedList<Character> signs,
 
         while (signs.contains('(')) {
             findParenthesisCloseIndxAndCalculate(ciphers, signs);
-
         }
 
+        /*заменяет знаки минус на плюс если нужно*/
         for (Character sgn : signs) {
+            int ind = signs.indexOf(sgn);
+           /*если следующая после отрицания число тоже отрицательное то ничего не делаем*/
+            if (ind + 2 < ciphers.size() - 1) {
+                if (sgn == '-' && ciphers.get(ind + 2) < 0) {
+                    continue;
+                }
+            }
             if (sgn == '-') {
-                int ind = signs.indexOf(sgn);
+
                 double tmp = ciphers.get(ind + 1);
                 ciphers.set(ind + 1, -tmp);
                 signs.set(ind, '+');

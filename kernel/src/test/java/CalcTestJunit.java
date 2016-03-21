@@ -72,6 +72,7 @@ public class CalcTestJunit {
     UserInputParser mInputParser53;
     UserInputParser mInputParser54;
     UserInputParser mInputParser55;
+    UserInputParser mInputParser56;
 
     Calculator clc1;
     Calculator clc2;
@@ -128,6 +129,7 @@ public class CalcTestJunit {
     Calculator clc53;
     Calculator clc54;
     Calculator clc55;
+    Calculator clc56;
     String exp = "2+3*(2+2)-3*(2+1)";//5
     String exp1 = "2/2";
     String exp2 = "5+2*(3-2)"; //=7
@@ -183,6 +185,7 @@ public class CalcTestJunit {
     String exp52 ="2+((-5)+(-6))";//-9
     String exp53 ="2+((-5)+(-6))+2";//-7
     String exp54 ="2+2*(-5-6)+3";//  exception
+    String exp55 ="2-2*(3-6)+2*(4-2)";// 12
 
 
 
@@ -427,6 +430,14 @@ public class CalcTestJunit {
                 mInputParser54.getMinusAfterParenth());
 
 /*init clc5 55 must be initialized below*/
+
+        /*init clc5 56*/
+        mInputParser56 = new UserInputParser(exp55);
+        clc56 = new Calculator(mInputParser56.getCiphersList(),
+                mInputParser56.getSignsList(),
+                mInputParser56.isHasFirstNegativeCipher(),
+                mInputParser56.getMinusAfterParenth());
+
 
 
     }
@@ -771,7 +782,11 @@ public class CalcTestJunit {
             fail("clc55 2+*(-5-6)+3 didn't throw exception");
         } catch (Exception e) { }
 
-
+/*test clc56*/
+        x = clc56.calculateExpression();
+        bd = new BigDecimal(x, MathContext.DECIMAL32);
+        res = bd.setScale(1, RoundingMode.UP);
+        assertEquals("clc56", BigDecimal.valueOf(12.0), res);
 
 
     }

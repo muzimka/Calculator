@@ -1,0 +1,49 @@
+body{
+    background: url("../img/texture.jpg") no-repeat ;
+    background-size: cover;
+    border: 100px dotted #0000FF;
+    padding-left: 30%;
+
+}
+
+table td{
+    alignment: center;
+}
+
+.center{
+    padding-left: 10%;
+}
+
+
+textarea[name=calc]{
+    background-color: bisque;
+    font-size: large;
+    text-align: center;
+    color: darkblue;
+}
+
+input[name=answer]{
+    background-color: cornsilk;
+    font-size: large;
+    text-align: center;
+    color: darkblue;
+}
+#frame >tr{
+    align-content: center;
+    width: 200px;
+}
+
+
+#frame{
+    height: 500px;
+    width: 500px;
+
+}
+
+#keys input{
+    height: 70px;
+    width: 70px;
+    color: azure;
+    background-color: blue;
+    font-size: x-large;
+}

@@ -69,11 +69,12 @@ public class CalcTest {
         String exp52 ="2+((-5)+(-6))";//-9
         String exp53 ="2+((-5)+(-6))+2";//-7
         String exp54 ="2+2*(-5-6)+3";//  exception
+        String exp55 ="2-2*(3-6)+2*(4-2)";// 12
 
 
 
 
-        UserInputParser userInputParser = new UserInputParser(exp54);
+        UserInputParser userInputParser = new UserInputParser(exp55);
         Calculator calculator = new Calculator(userInputParser.getCiphersList(),
                 userInputParser.getSignsList(),
                 userInputParser.isHasFirstNegativeCipher(),
