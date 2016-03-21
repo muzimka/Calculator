@@ -152,7 +152,7 @@ public class CalcTestJunit {
     String exp19 = "5/0"; //=exception
     String exp20 = "3+2*(6+8*(7+2))/0"; //=exception
     String exp21 = "4   +      8   *    7"; //=60
-    String exp22 = "2+2*(3+3*(2-3*(2-3*(2+2*(1+1)))))"; //-268
+        String exp22 = "2+2*(3+3*(2-3*(2-3*(2+2*(1+1)))))"; //308
     String exp23 = "5+2*(3+1-2*(3+2))"; // -7
     String exp24 = "5+2*(3+1-2*(3+2))+2"; // -5
     String exp25 ="2*(3+2*(2+2)+2)";//26
@@ -583,10 +583,10 @@ public class CalcTestJunit {
 
  /*test clc23*/
 
-       x = clc23.calculateExpression();
+      x = clc23.calculateExpression();
         bd = new BigDecimal(x, MathContext.DECIMAL32);
         res = bd.setScale(1, RoundingMode.UP);
-        assertEquals("clc23", BigDecimal.valueOf(-268.0), res);
+        assertEquals("clc23", BigDecimal.valueOf(308.0), res);
 
  /*test clc24*/
         x = clc24.calculateExpression();

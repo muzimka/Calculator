@@ -77,6 +77,15 @@ public Calculator(LinkedList<Double> ciphers, LinkedList<Character> signs,
             findParenthesisCloseIndxAndCalculate(ciphers, signs);
         }
 
+
+
+        while (signs.contains(multpl)) {
+            calcOperationPriority(multpl, signs, ciphers);
+        }
+        while (signs.contains(divide)) {
+            calcOperationPriority(divide, signs, ciphers);
+        }
+
         /*заменяет знаки минус на плюс если нужно*/
         for (Character sgn : signs) {
             int ind = signs.indexOf(sgn);
@@ -92,13 +101,6 @@ public Calculator(LinkedList<Double> ciphers, LinkedList<Character> signs,
                 ciphers.set(ind + 1, -tmp);
                 signs.set(ind, '+');
             }
-        }
-
-        while (signs.contains(multpl)) {
-            calcOperationPriority(multpl, signs, ciphers);
-        }
-        while (signs.contains(divide)) {
-            calcOperationPriority(divide, signs, ciphers);
         }
 
         if (ciphers.size() == 1) {
